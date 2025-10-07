@@ -7,9 +7,8 @@ package com.mycompany.qlbdt;
 import GUI.FrmDangNhap;
 
 public class QLBDT {
-    
+
     public static void main(String[] args) {
         new FrmDangNhap().setVisible(true);
     }
 }
-

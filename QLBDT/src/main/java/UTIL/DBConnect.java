@@ -17,12 +17,12 @@ public class DBConnect {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("✅ Kết nối CSDL thành công!");
+            System.out.println("ket noi thanh cong db :" + conn.getCatalog());
         } catch (ClassNotFoundException e) {
-            System.out.println("❌ Không tìm thấy driver SQL Server!");
+            System.out.println("Khong tim thay driver");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("❌ Lỗi kết nối CSDL!");
+            System.out.println("Khong the ket noi db");
             e.printStackTrace();
         }
         return conn;
