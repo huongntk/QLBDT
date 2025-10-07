@@ -4,12 +4,12 @@ import DTO.Product;
 import DTO.ProductDetail;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import DAO.ProductDAO;
 
-public class PnSanPham extends JPanel {
+public class PnSanPham extends javax.swing.JPanel {
     ProductDAO pDAO = new ProductDAO();
 
     public PnSanPham() {
@@ -39,7 +39,7 @@ public class PnSanPham extends JPanel {
         JComboBox<String> categoryCbx = new JComboBox<>(categories);
         categoryCbx.setBounds(480, 60, 120, 25);
         add(categoryCbx);
-        ArrayList<Product> pList = pDAO.getALLProduct();
+        ArrayList<Product> pList = (ArrayList<Product>) pDAO.getALLProduct();
         JLabel tmp = new JLabel("Tổng sản phẩm: " + pList.size());
         tmp.setBounds(20, 560, 200, 25);
         add(tmp);

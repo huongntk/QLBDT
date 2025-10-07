@@ -26,117 +26,165 @@ public class PnPhanQuyen extends javax.swing.JPanel{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        pnlThanhCongCu4 = new javax.swing.JPanel();
+        btnThem4 = new javax.swing.JButton();
+        btnSua4 = new javax.swing.JButton();
+        btnXoa4 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel2 = new javax.swing.JPanel();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox6 = new javax.swing.JCheckBox();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        pnlThanhCongCu4.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), new java.awt.Color(204, 204, 204)));
+
+        btnThem4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnThem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/them.png"))); // NOI18N
+        btnThem4.setText("THÊM");
+        btnThem4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnThem4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThem4ActionPerformed(evt);
+            }
+        });
+
+        btnSua4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnSua4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/sua.png"))); // NOI18N
+        btnSua4.setText("SỬA");
+        btnSua4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSua4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        btnXoa4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnXoa4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/xoa.png"))); // NOI18N
+        btnXoa4.setText("XÓA");
+        btnXoa4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnXoa4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        javax.swing.GroupLayout pnlThanhCongCu4Layout = new javax.swing.GroupLayout(pnlThanhCongCu4);
+        pnlThanhCongCu4.setLayout(pnlThanhCongCu4Layout);
+        pnlThanhCongCu4Layout.setHorizontalGroup(
+            pnlThanhCongCu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlThanhCongCu4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnThem4, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSua4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnXoa4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(667, Short.MAX_VALUE))
+        );
+        pnlThanhCongCu4Layout.setVerticalGroup(
+            pnlThanhCongCu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlThanhCongCu4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlThanhCongCu4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnXoa4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSua4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnThem4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jPanel1.add(pnlThanhCongCu4, java.awt.BorderLayout.NORTH);
+
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn quyền", "Quản trị viên", "Nhân viên bán hàng", "Nhân viên nhập hàng", " " }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel2.setMaximumSize(new java.awt.Dimension(146, 368));
+        jPanel2.setPreferredSize(new java.awt.Dimension(278, 582));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+
+        jCheckBox5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jCheckBox5.setText("Quản lý khuyến mãi");
+        jCheckBox5.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        jCheckBox5.setRolloverEnabled(false);
+        jPanel2.add(jCheckBox5);
+
+        jCheckBox4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jCheckBox4.setText("Quản lý nhân viên");
+        jCheckBox4.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        jPanel2.add(jCheckBox4);
 
         jCheckBox6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBox6.setText("Quản lý nhập hàng");
+        jCheckBox6.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        jPanel2.add(jCheckBox6);
 
         jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBox1.setText("Quản lý bán hàng");
+        jCheckBox1.setMargin(new java.awt.Insets(8, 8, 8, 8));
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
             }
         });
+        jPanel2.add(jCheckBox1);
+
+        jCheckBox7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jCheckBox7.setText("Quản lý thống kê");
+        jCheckBox7.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        jPanel2.add(jCheckBox7);
 
         jCheckBox3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBox3.setText("Quản lý sản phẩm");
-
-        jCheckBox5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox5.setText("Quản lý khuyến mãi");
-
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("QUẢN LÝ PHÂN QUYỀN");
+        jCheckBox3.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        jPanel2.add(jCheckBox3);
 
         jCheckBox2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBox2.setText("Quản lý khách hàng");
+        jCheckBox2.setMargin(new java.awt.Insets(8, 8, 8, 8));
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox2ActionPerformed(evt);
             }
         });
-
-        jCheckBox7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox7.setText("Quản lý thống kê");
-
-        jCheckBox4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox4.setText("Quản lý nhân viên");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(136, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox3)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox2)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox4)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox5)
-                .addGap(26, 26, 26)
-                .addComponent(jCheckBox6)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox7)
-                .addContainerGap())
-        );
+        jPanel2.add(jCheckBox2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(167, 167, 167)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(354, 354, 354)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(317, 317, 317)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(14, 14, 14)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnThem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThem4ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         // TODO add your handling code here:
@@ -146,8 +194,35 @@ public class PnPhanQuyen extends javax.swing.JPanel{
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnLamMoi1;
+    private javax.swing.JButton btnLamMoi2;
+    private javax.swing.JButton btnLamMoi3;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JButton btnSua1;
+    private javax.swing.JButton btnSua2;
+    private javax.swing.JButton btnSua3;
+    private javax.swing.JButton btnSua4;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnThem1;
+    private javax.swing.JButton btnThem2;
+    private javax.swing.JButton btnThem3;
+    private javax.swing.JButton btnThem4;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXoa1;
+    private javax.swing.JButton btnXoa2;
+    private javax.swing.JButton btnXoa3;
+    private javax.swing.JButton btnXoa4;
+    private javax.swing.JComboBox<String> cbTimKiem;
+    private javax.swing.JComboBox<String> cbTimKiem1;
+    private javax.swing.JComboBox<String> cbTimKiem2;
+    private javax.swing.JComboBox<String> cbTimKiem3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -156,7 +231,20 @@ public class PnPhanQuyen extends javax.swing.JPanel{
     private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblTimKiem;
+    private javax.swing.JLabel lblTimKiem1;
+    private javax.swing.JLabel lblTimKiem2;
+    private javax.swing.JLabel lblTimKiem3;
+    private javax.swing.JPanel pnlThanhCongCu;
+    private javax.swing.JPanel pnlThanhCongCu1;
+    private javax.swing.JPanel pnlThanhCongCu2;
+    private javax.swing.JPanel pnlThanhCongCu3;
+    private javax.swing.JPanel pnlThanhCongCu4;
+    private javax.swing.JTextField txtTuKhoa;
+    private javax.swing.JTextField txtTuKhoa1;
+    private javax.swing.JTextField txtTuKhoa2;
+    private javax.swing.JTextField txtTuKhoa3;
     // End of variables declaration//GEN-END:variables
 }

@@ -41,7 +41,18 @@ public class TaiKhoanBUS {
             System.out.println("Mật khẩu mới không được trùng mật khẩu cũ!");
             return false;
         }
-        return dao.doiMatKhau(user, oldPass, newPass);
+        
+        // Kiểm tra tài khoản tồn tại và mật khẩu cũ đúng
+        TaiKhoan tk = dao.getTaiKhoanByUsername(user);
+        if (tk == null) {
+            System.out.println("❌ Tài khoản không tồn tại!");
+            return false;
+        }
+        if (!tk.getMatKhau().equals(oldPass)) {
+            System.out.println("❌ Mật khẩu cũ không đúng!");
+            return false;
+        }
+        return dao.doiMatKhau(user, newPass);
     }
 
     public boolean login(String taiKhoan, String matKhau) {

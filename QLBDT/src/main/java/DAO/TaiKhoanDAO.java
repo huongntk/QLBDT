@@ -31,18 +31,40 @@ public class TaiKhoanDAO {
         }
         return tk;
     }
-    public boolean doiMatKhau(String user, String oldPass, String newPass) {
-        String sql = "UPDATE TaiKhoan SET MatKhau=? WHERE TaiKhoan=? AND MatKhau=?";
-        try (Connection con = DBConnect.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, newPass);
-            ps.setString(2, user);
-            ps.setString(3, oldPass);
-            return ps.executeUpdate() > 0;
+    
+    public TaiKhoan getTaiKhoanByUsername(String username) {
+        String sql = "SELECT * FROM TaiKhoan WHERE taiKhoan = ?";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new TaiKhoan(
+                    rs.getInt("maNV"),
+                    rs.getString("taiKhoan"),
+                    rs.getString("matKhau"),
+                    rs.getString("quyen"),
+                    rs.getInt("trangThai")
+                );
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
+    
+    public boolean doiMatKhau(String username, String newPass) {
+    String sql = "UPDATE TaiKhoan SET matKhau = ? WHERE taiKhoan = ?";
+    try (Connection conn = DBConnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, newPass);
+        ps.setString(2, username);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
 }

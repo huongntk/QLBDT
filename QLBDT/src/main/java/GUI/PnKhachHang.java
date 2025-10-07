@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class PnKhachHang extends JPanel {
+public class PnKhachHang extends javax.swing.JPanel {
 
     
     private final KhachHangBUS khachHangBUS;
