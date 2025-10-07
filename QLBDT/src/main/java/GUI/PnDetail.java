@@ -26,7 +26,7 @@ public class PnDetail extends JFrame {
 
     public void initComponents() {
         setLayout(null);
-        setSize(500, 700);
+        setSize(680, 700);
         setLocationRelativeTo(null);
         setBackground(Color.WHITE);
 

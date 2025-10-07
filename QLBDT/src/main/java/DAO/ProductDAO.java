@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import DTO.Product;
 import UTIL.DBConnect;
 
@@ -61,6 +63,24 @@ public class ProductDAO {
 
         } catch (SQLException e) {
             System.out.println("❌ Lỗi khi thêm sản phẩm vào CSDL:");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteProduct(int productId) {
+        String id = String.valueOf(productId);
+        String sql = "DELETE FROM SanPham WHERE MaSP = " + id;
+        try (Connection conn = DBConnect.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Xóa sản phẩm thành công!");
+            } else {
+                System.out.println("Xóa sản phẩm thất bại!");
+            }
+        } catch (SQLException e) {
+            System.out.println(" Loi khi xoa san pham khoi CSDL:");
             e.printStackTrace();
         }
     }

@@ -82,6 +82,26 @@ public class PnSanPham extends JPanel {
             }
         });
         JButton deleteProductBtn = new JButton("Xóa sản phẩm");
+        deleteProductBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    Product selectedProduct = pList.get(selectedRow);
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "Bạn có chắc chắn muốn xóa sản phẩm: " + selectedProduct.getProductName() + "?", "Xác nhận",
+                            JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        pDAO.deleteProduct(selectedProduct.getProductId());
+                        model.removeRow(selectedRow);
+                        tmp.setText("Tổng sản phẩm: " + (pList.size() - 1));
+                        pList.remove(selectedRow);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn một sản phẩm để xóa.");
+                }
+            }
+        });
         deleteProductBtn.setBounds(240, 560, 120, 25);
         add(deleteProductBtn);
     }
