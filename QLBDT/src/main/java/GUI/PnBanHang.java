@@ -15,6 +15,16 @@ public class PnBanHang extends javax.swing.JPanel {
      */
     public PnBanHang() {
         initComponents();
+        
+        PnBanHangForm pnBanHang = new PnBanHangForm();
+        PnHoaDonForm pnHoaDon = new PnHoaDonForm();
+        
+        // Xóa tab mặc định (nếu NetBeans tạo sẵn)
+        tabQLBanHang.removeAll();
+
+        // Thêm tab mới với form riêng
+        tabQLBanHang.addTab("Bán hàng", pnBanHang);
+        tabQLBanHang.addTab("Hóa đơn", pnHoaDon);
     }
 
     /**
@@ -26,19 +36,32 @@ public class PnBanHang extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tabQLBanHang = new javax.swing.JTabbedPane();
+        tabBanHang = new javax.swing.JTabbedPane();
+        tabHoaDon = new javax.swing.JTabbedPane();
+
+        tabQLBanHang.addTab("Bán hàng", tabBanHang);
+        tabQLBanHang.addTab("Hóa đơn", tabHoaDon);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabQLBanHang, javax.swing.GroupLayout.DEFAULT_SIZE, 983, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(tabQLBanHang, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane tabBanHang;
+    private javax.swing.JTabbedPane tabHoaDon;
+    private javax.swing.JTabbedPane tabQLBanHang;
     // End of variables declaration//GEN-END:variables
 }
