@@ -123,7 +123,7 @@ public class PnKhuyenMaiForm extends javax.swing.JFrame {
                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLamMoi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,7 +241,7 @@ public class PnKhuyenMaiForm extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlNhapTTKMLayout.createSequentialGroup()
                             .addComponent(lblNgayBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(txtNgayBatDau)))))
+                            .addComponent(txtNgayBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)))))
         );
         pnlNhapTTKMLayout.setVerticalGroup(
             pnlNhapTTKMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,7 +323,7 @@ public class PnKhuyenMaiForm extends javax.swing.JFrame {
                     .addGroup(pnlDSMaGiamLayout.createSequentialGroup()
                         .addComponent(lblDSMaGiam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addComponent(tblDSMaGiam)))
+                    .addComponent(tblDSMaGiam, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)))
         );
         pnlDSMaGiamLayout.setVerticalGroup(
             pnlDSMaGiamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

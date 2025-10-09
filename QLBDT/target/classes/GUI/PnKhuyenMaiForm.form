@@ -77,7 +77,7 @@
                   <Component id="btnXoa" min="-2" pref="60" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnLamMoi" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="54" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="lblTimKiem" min="-2" pref="64" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cbTimKiem" min="-2" max="-2" attributes="0"/>
@@ -253,7 +253,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblNgayBatDau" min="-2" pref="89" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtNgayBatDau" max="32767" attributes="0"/>
+                              <Component id="txtNgayBatDau" pref="98" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -411,7 +411,7 @@
                           <Component id="lblDSMaGiam" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
-                      <Component id="tblDSMaGiam" max="32767" attributes="0"/>
+                      <Component id="tblDSMaGiam" pref="694" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>

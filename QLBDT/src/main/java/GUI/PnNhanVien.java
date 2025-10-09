@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class PnNhanVien extends javax.swing.JPanel {
 
-    
     private final NhanVienBUS nhanVienBUS;
 
     // --- Components ---
@@ -84,17 +83,15 @@ public class PnNhanVien extends javax.swing.JPanel {
         groupGioiTinh.add(radNu);
         pnlForm.add(radNam);
         pnlForm.add(radNu);
-        
+
         JLabel lblChucVu = new JLabel("Chức vụ:");
         lblChucVu.setBounds(510, 80, 60, 25);
         pnlForm.add(lblChucVu);
-        
+
         txtChucVu = new JTextField();
         txtChucVu.setBounds(570, 80, 180, 25);
         pnlForm.add(txtChucVu);
 
-
-       
         btnThem = new JButton("Thêm");
         btnThem.setBounds(800, 25, 100, 30);
         pnlForm.add(btnThem);
@@ -111,14 +108,13 @@ public class PnNhanVien extends javax.swing.JPanel {
         btnLamMoi.setBounds(920, 65, 100, 30);
         pnlForm.add(btnLamMoi);
 
-       
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(20, 190, 1060, 380);
         add(scrollPane);
 
         tblNhanVien = new JTable();
         modelNhanVien = new DefaultTableModel(
-                new Object[]{"Mã NV", "Họ", "Tên", "Giới tính", "SĐT", "Chức vụ", "Trạng thái"}, 0) {
+                new Object[] { "Mã NV", "Họ", "Tên", "Giới tính", "SĐT", "Chức vụ", "Trạng thái" }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -127,11 +123,11 @@ public class PnNhanVien extends javax.swing.JPanel {
         tblNhanVien.setModel(modelNhanVien);
         scrollPane.setViewportView(tblNhanVien);
     }
-    
+
     private void loadDataToTable() {
         modelNhanVien.setRowCount(0);
-       
-        ArrayList<NhanVienDTO> dsNhanVien = nhanVienBUS.getAllNhanVien(); 
+
+        ArrayList<NhanVienDTO> dsNhanVien = nhanVienBUS.getAllNhanVien();
 
         for (NhanVienDTO nv : dsNhanVien) {
             if (nv.isTrangThai()) {
@@ -158,14 +154,14 @@ public class PnNhanVien extends javax.swing.JPanel {
                     txtMaNV.setText(modelNhanVien.getValueAt(selectedRow, 0).toString());
                     txtHo.setText(modelNhanVien.getValueAt(selectedRow, 1).toString());
                     txtTen.setText(modelNhanVien.getValueAt(selectedRow, 2).toString());
-                    
+
                     String gioiTinh = modelNhanVien.getValueAt(selectedRow, 3).toString();
                     if (gioiTinh.equalsIgnoreCase("Nam")) {
                         radNam.setSelected(true);
                     } else {
                         radNu.setSelected(true);
                     }
-                    
+
                     txtSdt.setText(modelNhanVien.getValueAt(selectedRow, 4).toString());
                     txtChucVu.setText(modelNhanVien.getValueAt(selectedRow, 5).toString());
                 }
@@ -177,8 +173,8 @@ public class PnNhanVien extends javax.swing.JPanel {
         btnThem.addActionListener(e -> {
             NhanVienDTO nv = getFormData();
             if (nv != null) {
-               
-                String result = nhanVienBUS.addNhanVien(nv); 
+
+                String result = nhanVienBUS.addNhanVien(nv);
                 JOptionPane.showMessageDialog(this, result);
                 if (result.contains("thành công")) {
                     loadDataToTable();
@@ -210,7 +206,8 @@ public class PnNhanVien extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa!");
                 return;
             }
-            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa nhân viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa nhân viên này?", "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 int maNV = Integer.parseInt(txtMaNV.getText());
                 String result = nhanVienBUS.deleteNhanVien(maNV);
