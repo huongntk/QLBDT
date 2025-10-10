@@ -1,4 +1,4 @@
-package GUI;
+/*package GUI;
 
 import BUS.KhachHangBUS;
 import DTO.KhachHangDTO;
@@ -249,5 +249,5 @@ public class PnKhachHang extends javax.swing.JPanel {
     }
 }
 
-    
+    */
 

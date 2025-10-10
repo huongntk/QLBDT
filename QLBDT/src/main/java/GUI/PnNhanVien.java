@@ -1,3 +1,4 @@
+/*
 package GUI;
 
 import BUS.NhanVienBUS;
@@ -252,3 +253,4 @@ public class PnNhanVien extends javax.swing.JPanel {
         tblNhanVien.clearSelection();
     }
 }
+*/
