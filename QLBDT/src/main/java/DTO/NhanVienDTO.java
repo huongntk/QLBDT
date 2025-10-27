@@ -1,17 +1,22 @@
 package DTO;
 
-public class NhanVienDTO{
+public class NhanVienDTO {
+
     private int maNV;
     private String ho;
     private String ten;
     private String gioiTinh;
     private String soDienThoai;
     private String chucVu;
-    private boolean trangThai; 
+    private boolean trangThai;
+
+    private String tenTaiKhoan;
+    private String matKhau;
+
     public NhanVienDTO() {
     }
 
-    public NhanVienDTO(int maNV, String ho, String ten, String gioiTinh, String soDienThoai, String chucVu, boolean trangThai) {
+    public NhanVienDTO(int maNV, String ho, String ten, String gioiTinh, String soDienThoai, String chucVu, boolean trangThai, String tenTaiKhoan, String matKhau) {
         this.maNV = maNV;
         this.ho = ho;
         this.ten = ten;
@@ -19,9 +24,10 @@ public class NhanVienDTO{
         this.soDienThoai = soDienThoai;
         this.chucVu = chucVu;
         this.trangThai = trangThai;
+        this.tenTaiKhoan = tenTaiKhoan;
+        this.matKhau = matKhau;
     }
 
-  
     public int getMaNV() {
         return maNV;
     }
@@ -76,5 +82,21 @@ public class NhanVienDTO{
 
     public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getTenTaiKhoan() {
+        return tenTaiKhoan;
+    }
+
+    public void setTenTaiKhoan(String tenTaiKhoan) {
+        this.tenTaiKhoan = tenTaiKhoan;
+    }
+
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
     }
 }

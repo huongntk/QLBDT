@@ -1,16 +1,15 @@
 package DTO;
 
+public class KhachHangDTO {
 
-public class KhachHangDTO{
     private int maKH;
     private String ho;
     private String ten;
-    private String gioiTinh;
+    private String gioiTinh; 
     private String soDienThoai;
-    private int tongChiTieu;
+    private int tongChiTieu; 
     private boolean tinhTrang; 
 
-    
     public KhachHangDTO() {
     }
 
@@ -24,7 +23,7 @@ public class KhachHangDTO{
         this.tinhTrang = tinhTrang;
     }
 
-    
+    // Getters
     public int getMaKH() {
         return maKH;
     }
@@ -49,10 +48,11 @@ public class KhachHangDTO{
         return tongChiTieu;
     }
 
-    public boolean isTinhTrang() { // Getter cho kiểu boolean thường bắt đầu bằng 'is'
+    public boolean isTinhTrang() { 
         return tinhTrang;
     }
 
+    // Setters
     public void setMaKH(int maKH) {
         this.maKH = maKH;
     }
@@ -79,18 +79,5 @@ public class KhachHangDTO{
 
     public void setTinhTrang(boolean tinhTrang) {
         this.tinhTrang = tinhTrang;
-    }
-
-    @Override
-    public String toString() {
-        return "KhachHangDTO{" +
-                "maKH=" + maKH +
-                ", ho='" + ho + '\'' +
-                ", ten='" + ten + '\'' +
-                ", gioiTinh='" + gioiTinh + '\'' +
-                ", soDienThoai='" + soDienThoai + '\'' +
-                ", tongChiTieu=" + tongChiTieu +
-                ", tinhTrang=" + tinhTrang +
-                '}';
     }
 }
