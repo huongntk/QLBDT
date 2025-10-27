@@ -9,7 +9,9 @@ public class CTSanPhamBUS {
     public ProductDetail getDetail(int id) {
         return dao.getByProductId(id);
     }
-
+    public boolean insertCTSanPham(ProductDetail detail){
+        return dao.insertCTSanPham(detail);
+    }
     public boolean updateCTSanPham(ProductDetail detail) {
         return dao.updateCTSanPham(detail);
     }

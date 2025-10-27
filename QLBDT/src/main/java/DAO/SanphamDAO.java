@@ -50,8 +50,9 @@ public class SanphamDAO {
     public ArrayList<Product> getById(int id) {
         ArrayList<Product> listTmp = new ArrayList();
         try (Connection conn = DBConnect.getConnection()) {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM SanPham WHERE ID = " + id + " AND TrangThai = 1");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM SanPham WHERE ID = ? AND TrangThai = 1");
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
                 p.setID(rs.getInt("ID"));
@@ -73,6 +74,66 @@ public class SanphamDAO {
             e.printStackTrace();
         }
         return listTmp;
+    }
+    public ArrayList<Product> getByCate(int maLoai){
+        ArrayList<Product> listTmp = new ArrayList();
+        try (Connection conn = DBConnect.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM SanPham WHERE MaLoai = ? AND TrangThai = 1");
+            ps.setInt(1,maLoai);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setID(rs.getInt("ID"));
+                p.setTenSP(rs.getString("TenSP"));
+                p.setThuongHieu(rs.getString("ThuongHieu"));
+                p.setXuatXu(rs.getString("XuatXu"));
+                p.setMaLoai(rs.getInt("MaLoai"));
+                p.setGioiTinh(rs.getString("GioiTinh"));
+                p.setGiaBan(rs.getFloat("GiaBan"));
+                p.setSoLuong(rs.getInt("SoLuong"));
+                p.setHinhAnh(rs.getString("HinhAnh"));
+                p.setMoTa(rs.getString("MoTa"));
+                p.setMaNCC(rs.getInt("maNCC"));
+                p.setTrangThai(rs.getBoolean("TrangThai"));
+                listTmp.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listTmp;
+        
+    }
+    public int insertSanPham(Product p){
+        String sql = "INSERT INTO SanPham " +
+             "(TenSP, ThuongHieu, XuatXu, MaLoai, GioiTinh, GiaBan, SoLuong, HinhAnh, MoTa, maNCC,TrangThai) " +
+             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
+        int newId = -1;
+        try(Connection conn = DBConnect.getConnection()){
+            
+            PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, p.getTenSP());
+            ps.setString(2, p.getThuongHieu());
+            ps.setString(3, p.getXuatXu());
+            ps.setInt(4, p.getMaLoai());
+            ps.setString(5, p.getGioiTinh());
+            ps.setDouble(6, p.getGiaBan());
+            ps.setInt(7, p.getSoLuong());
+            ps.setString(8, p.getHinhAnh());
+            ps.setString(9, p.getMoTa());
+            ps.setInt(10, p.getMaNCC());
+            
+            int row = ps.executeUpdate();
+            if(row > 0){
+                ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next()) newId = rs.getInt(1); 
+            }
+            
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return newId;
     }
 
     public boolean updateSanPham(Product p) {
@@ -99,8 +160,9 @@ public class SanphamDAO {
 
     public boolean deleteById(int id) {
         try (Connection conn = DBConnect.getConnection()) {
-            Statement st = conn.createStatement();
-            int row = st.executeUpdate("UPDATE SanPham SET TrangThai = 0 WHERE id = " + id);
+            PreparedStatement ps = conn.prepareStatement("UPDATE SanPham SET TrangThai = 0 WHERE id = ?");
+            ps.setInt(1,id);
+            int row = ps.executeUpdate();
             if (row <= 0)
                 return false;
 
@@ -109,5 +171,34 @@ public class SanphamDAO {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Product> getByName(String searchName) {
+        ArrayList<Product> listTmp = new ArrayList();
+        try (Connection conn = DBConnect.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM SanPham WHERE TenSP LIKE ? AND TrangThai= 1");
+            ps.setString(1,"%"+searchName+"%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setID(rs.getInt("ID"));
+                p.setTenSP(rs.getString("TenSP"));
+                p.setThuongHieu(rs.getString("ThuongHieu"));
+                p.setXuatXu(rs.getString("XuatXu"));
+                p.setMaLoai(rs.getInt("MaLoai"));
+                p.setGioiTinh(rs.getString("GioiTinh"));
+                p.setGiaBan(rs.getFloat("GiaBan"));
+                p.setSoLuong(rs.getInt("SoLuong"));
+                p.setHinhAnh(rs.getString("HinhAnh"));
+                p.setMoTa(rs.getString("MoTa"));
+                p.setMaNCC(rs.getInt("maNCC"));
+                p.setTrangThai(rs.getBoolean("TrangThai"));
+                listTmp.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listTmp;
     }
 }

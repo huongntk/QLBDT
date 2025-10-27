@@ -9,21 +9,19 @@ import BUS.CTSanPhamBUS;
 import BUS.SanPhamBUS;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import DTO.ProductDetail;
 
-import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -31,8 +29,6 @@ import java.awt.event.*;
  */
 public class PnSanPham extends javax.swing.JPanel {
         private ArrayList<Product> list;
-        private DefaultTableModel model;
-
         /**
          * Creates new form PnSanPham
          */
@@ -42,26 +38,13 @@ public class PnSanPham extends javax.swing.JPanel {
                 String[] columnNames = { "ID", "Tên sản phẩm", "Thương hiệu", "Xuất xứ", "Mã loại", "Giới tính",
                                 "Giá bán",
                                 "Số lượng", "Hình ảnh", "Mô tả", "Mã NCC" };
-                var model = new DefaultTableModel(columnNames, 0) {
-                        private boolean canEdit = false;
-
-                        @Override
-                        public boolean isCellEditable(int row, int column) {
-                                return canEdit;
-                        }
-
-                        public void setEditable(boolean editable) {
-                                this.canEdit = editable;
-                                fireTableStructureChanged();
-                        }
-                };
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) ;
                 for (Product p : list) {
                         Object[] rowData = { p.getID(), p.getTenSP(), p.getThuongHieu(), p.getXuatXu(), p.getMaLoai(),
                                         p.getGioiTinh(), p.getGiaBan(), p.getSoLuong(), p.getHinhAnh(), p.getMoTa(),
                                         p.getMaNCC() };
                         model.addRow(rowData);
                 }
-                model.setEditable(false);
                 jTable1.setModel(model);
         }
 
@@ -86,7 +69,7 @@ public class PnSanPham extends javax.swing.JPanel {
                                 jTextField11.setText(detail.getThoiGianTruCoc());
                                 jTextField12.setText(detail.getDoChiuNuoc());
                                 jTextField13.setText(detail.getChucNangKhac());
-                                jTextField14.setText(detail.getTrongLuong());
+                                jTextField14.setText(String.valueOf(detail.getTrongLuong()));
                                 jTextField15.setText(detail.getBaoHanh());
                         }
 
@@ -111,7 +94,10 @@ public class PnSanPham extends javax.swing.JPanel {
         // <editor-fold defaultstate="collapsed" desc="Generated
         // <editor-fold defaultstate="collapsed" desc="Generated
         // <editor-fold defaultstate="collapsed" desc="Generated
-        // <editor-fold defaultstate="collapsed" desc="Generated Code">
+        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt){
+            openInsertDialog();
+            
+        }// <editor-fold defaultstate="collapsed" desc="Generated Code">
         private void initComponents() {
 
                 jPanel1 = new javax.swing.JPanel();
@@ -163,7 +149,11 @@ public class PnSanPham extends javax.swing.JPanel {
 
                 jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/them.png"))); // NOI18N
                 jButton1.setText("Thêm");
-
+                jButton1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jButton1ActionPerformed(evt);
+                        }
+                });
                 jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/sua.png"))); // NOI18N
                 jButton2.setText("Sửa");
                 jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +169,7 @@ public class PnSanPham extends javax.swing.JPanel {
                                 jButton3ActionPerformed(evt);
                         }
                 });
-
+                jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh.png")));
                 jButton4.setText("Làm mới");
                 jButton4.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,18 +221,22 @@ public class PnSanPham extends javax.swing.JPanel {
 
                 jLabel1.setText("Danh sách sản phẩm");
 
-                jTextField1.setText("Tên sản phẩm");
-                jTextField1.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextField1ActionPerformed(evt);
-                        }
-                });
+                jTextField1.setText("");
 
                 jButton5.setText("Tìm");
-
+                jButton5.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jButton5ActionPerformed(evt);
+                        }
+                });     
                 jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(
                                 new String[] { "Loại", "Hand-Winding", "Automatic", "Đồng hồ cơ lai" }));
+                jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jComboBox1ActionPerformed(evt);
+                        }
 
+                });
                 javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
                 jPanel2.setLayout(jPanel2Layout);
                 jPanel2Layout.setHorizontalGroup(
@@ -365,11 +359,6 @@ public class PnSanPham extends javax.swing.JPanel {
                 jLabel15.setText("Trọng lượng");
 
                 jTextField14.setEditable(false);
-                jTextField14.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextField14ActionPerformed(evt);
-                        }
-                });
 
                 jLabel16.setText("Bảo hành");
 
@@ -697,27 +686,6 @@ public class PnSanPham extends javax.swing.JPanel {
                                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                 Short.MAX_VALUE)));
         }// </editor-fold>
-
-        private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField5ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField5ActionPerformed
-
-        private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField7ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField7ActionPerformed
-
-        private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField11ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField11ActionPerformed
-
-        private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField13ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField13ActionPerformed
-
-        private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField14ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField14ActionPerformed
-
         private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
                 int selectedRow = jTable1.getSelectedRow();
                 if (selectedRow == -1) {
@@ -747,13 +715,55 @@ public class PnSanPham extends javax.swing.JPanel {
         }// GEN-LAST:event_jButton3ActionPerformed
 
         private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton4ActionPerformed
-                // TODO add your handling code here:
+               loadDataToTable();
         }// GEN-LAST:event_jButton4ActionPerformed
+        
+        private void jButton5ActionPerformed(ActionEvent evt) {
+            String searchText = jTextField1.getText();
+            if(searchText == "") loadDataToTable();
+            ArrayList<Product> listBySearch = new ArrayList();
+            SanPhamBUS bus = new SanPhamBUS();
+            listBySearch = bus.getSanPhamByName(searchText);
+            String[] columnNames = { "ID", "Tên sản phẩm", "Thương hiệu", "Xuất xứ", "Mã loại", "Giới tính",
+                                "Giá bán",
+                                "Số lượng", "Hình ảnh", "Mô tả", "Mã NCC" };
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) ;
+                for (Product p : listBySearch) {
+                        Object[] rowData = { p.getID(), p.getTenSP(), p.getThuongHieu(), p.getXuatXu(), p.getMaLoai(),
+                                        p.getGioiTinh(), p.getGiaBan(), p.getSoLuong(), p.getHinhAnh(), p.getMoTa(),
+                                        p.getMaNCC() };
+                        model.addRow(rowData);
+                }
+                jTable1.setModel(model);
+        }
 
-        private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
-                // TODO add your handling code here:
-        }// GEN-LAST:event_jTextField1ActionPerformed
-
+        private void jComboBox1ActionPerformed(ActionEvent evt) {
+            String selected = (String) jComboBox1.getSelectedItem();
+            ArrayList<Product> listByCate = new ArrayList();
+            SanPhamBUS bus = new SanPhamBUS();
+            int maLoaiTmp = -1;
+            switch (selected) {
+            case "Hand-Winding" -> maLoaiTmp = 1;
+            case "Automatic" -> maLoaiTmp = 2;
+            case "Đồng hồ cơ lai" ->maLoaiTmp = 3;
+            case "Loại" -> {
+                        loadDataToTable(); 
+                        return;}
+            default -> JOptionPane.showMessageDialog(this, "Lỗi!");
+            }
+            listByCate = bus.getSanPhamByCate(maLoaiTmp);
+            String[] columnNames = { "ID", "Tên sản phẩm", "Thương hiệu", "Xuất xứ", "Mã loại", "Giới tính",
+                                "Giá bán",
+                                "Số lượng", "Hình ảnh", "Mô tả", "Mã NCC" };
+                DefaultTableModel model = new DefaultTableModel(columnNames, 0) ;
+                for (Product p : listByCate) {
+                        Object[] rowData = { p.getID(), p.getTenSP(), p.getThuongHieu(), p.getXuatXu(), p.getMaLoai(),
+                                        p.getGioiTinh(), p.getGiaBan(), p.getSoLuong(), p.getHinhAnh(), p.getMoTa(),
+                                        p.getMaNCC() };
+                        model.addRow(rowData);
+                }
+                jTable1.setModel(model);
+            }
         private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {
                 int selectedRow = jTable1.getSelectedRow();
                 int id = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
@@ -771,7 +781,7 @@ public class PnSanPham extends javax.swing.JPanel {
                 detail.setThoiGianTruCoc(jTextField11.getText());
                 detail.setDoChiuNuoc(jTextField12.getText());
                 detail.setChucNangKhac(jTextField13.getText());
-                detail.setTrongLuong(jTextField14.getText());
+                detail.setTrongLuong(Float.valueOf(jTextField14.getText()));
                 detail.setBaoHanh(jTextField15.getText());
                 CTSanPhamBUS bus = new CTSanPhamBUS();
                 boolean result = bus.updateCTSanPham(detail);
@@ -803,7 +813,6 @@ public class PnSanPham extends javax.swing.JPanel {
         private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton6ActionPerformed
                 setEditable(true);
         }// GEN-LAST:event_jButton6ActionPerformed
-
         @SuppressWarnings("empty-statement")
 
         // Variables declaration - do not modify
@@ -859,17 +868,21 @@ public class PnSanPham extends javax.swing.JPanel {
                 JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Sửa sản phẩm", true);
                 dialog.setSize(400, 500);
                 dialog.setLayout(new GridLayout(11, 2, 5, 5));
+                // Các phần tử
                 JTextField txtTenSP = new JTextField(p.getTenSP());
                 JTextField txtThuongHieu = new JTextField(p.getThuongHieu());
                 JTextField txtXuatXu = new JTextField(p.getXuatXu());
-                JTextField txtLoai = new JTextField(String.valueOf(p.getMaLoai()));
+                String[] loai = {"Hand-Winding" ,"Automatic" ,"Đồng hồ cơ lai" };
+                JComboBox cbLoai = new JComboBox(loai);
+                cbLoai.setSelectedItem(loai[p.getMaLoai()-1]);
                 JTextField txtGioiTinh = new JTextField(p.getGioiTinh());
                 JTextField txtGiaBan = new JTextField(String.valueOf(p.getGiaBan()));
                 JTextField txtSoLuong = new JTextField(String.valueOf(p.getSoLuong()));
                 JTextField txtHinhAnh = new JTextField(p.getHinhAnh());
                 JTextField txtMoTa = new JTextField(p.getMoTa());
-                JTextField txtNCC = new JTextField(String.valueOf(p.getMaNCC()));
-
+                String[] ncc = {"Orient Japan","Seiko Watch Corp"};
+                JComboBox cbNCC = new JComboBox(ncc);
+                // Thêm phần tử vào dialog
                 dialog.add(new JLabel("Tên sản phẩm:"));
                 dialog.add(txtTenSP);
                 dialog.add(new JLabel("Thương hiệu:"));
@@ -877,7 +890,7 @@ public class PnSanPham extends javax.swing.JPanel {
                 dialog.add(new JLabel("Xuất xứ:"));
                 dialog.add(txtXuatXu);
                 dialog.add(new JLabel("Loại:"));
-                dialog.add(txtLoai);
+                dialog.add(cbLoai);
                 dialog.add(new JLabel("Giới tính:"));
                 dialog.add(txtGioiTinh);
                 dialog.add(new JLabel("Giá bán:"));
@@ -889,7 +902,111 @@ public class PnSanPham extends javax.swing.JPanel {
                 dialog.add(new JLabel("Mô tả:"));
                 dialog.add(txtMoTa);
                 dialog.add(new JLabel("Nhà cung cấp:"));
-                dialog.add(txtNCC);
+                dialog.add(cbNCC);
+
+                JButton btnSave = new JButton("Lưu");
+                JButton btnCancel = new JButton("Hủy");
+
+                dialog.add(btnSave);
+                dialog.add(btnCancel);
+                // Sự kiện nút Hủy
+                btnCancel.addActionListener(e -> dialog.dispose());
+
+                // Sự kiện nút Lưu
+                btnSave.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                        p.setTenSP(txtTenSP.getText());
+                        p.setThuongHieu(txtThuongHieu.getText());
+                        p.setXuatXu(txtXuatXu.getText());
+                        int maLoaiTmp = 0; 
+                        switch (cbLoai.getSelectedItem().toString()) {
+                            case "Hand-Winding":
+                                maLoaiTmp = 1;
+                                break;
+                            case "Automatic":
+                                maLoaiTmp = 2;
+                                break;
+                            case "Đồng hồ cơ lai":
+                                maLoaiTmp = 3;
+                                break;
+                            default:
+                                maLoaiTmp = 0; 
+                                break;
+                        }
+                        p.setMaLoai(maLoaiTmp);
+                        p.setGioiTinh(txtGioiTinh.getText());
+                        p.setGiaBan(Float.valueOf(txtGiaBan.getText()));
+                        p.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                        p.setHinhAnh(txtHinhAnh.getText());
+                        p.setMoTa(txtMoTa.getText());
+                        int maNccTmp = 0;
+                        if(cbNCC.getSelectedItem()== "Orient Japan"){
+                            maNccTmp = 4;
+                        }else if(cbNCC.getSelectedItem()== "Seiko Watch Corp"){
+                            maNccTmp = 5;
+                        };
+                        p.setMaNCC(maNccTmp);                      
+                        SanPhamBUS bus = new SanPhamBUS();
+                        boolean result = bus.updateSanPham(p);
+
+                        if (result) {
+                            JOptionPane.showMessageDialog(dialog, "Cập nhật thành công!");
+                            loadDataToTable();
+                        } else {
+                            JOptionPane.showMessageDialog(dialog, "Cập nhật thất bại!");
+                        }
+
+                        dialog.dispose();
+                        } catch (NumberFormatException ex) { 
+
+                            JOptionPane.showMessageDialog(dialog, "Lỗi: 'Giá bán' và 'Số lượng' phải là số và không được để trống!", "Lỗi đầu vào", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
+        }
+        private void openInsertDialog(){
+            JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Thêm sản phẩm", true);
+                dialog.setSize(400, 500);
+                dialog.setLayout(new GridLayout(11, 2, 5, 5));
+                // Các phần tử
+                JTextField txtTenSP = new JTextField();
+                JTextField txtThuongHieu = new JTextField();
+                JTextField txtXuatXu = new JTextField();
+                String[] loai = {"Hand-Winding" ,"Automatic" ,"Đồng hồ cơ lai" };
+                JComboBox cbLoai = new JComboBox(loai);
+                JTextField txtGioiTinh = new JTextField();
+                JTextField txtGiaBan = new JTextField();
+                JTextField txtSoLuong = new JTextField();
+                JTextField txtHinhAnh = new JTextField();
+                JTextField txtMoTa = new JTextField();
+                String[] ncc = {"Orient Japan","Seiko Watch Corp"};
+                JComboBox cbNCC = new JComboBox(ncc);
+                // Thêm phần tử vào dialog
+                dialog.add(new JLabel("Tên sản phẩm:"));
+                dialog.add(txtTenSP);
+                dialog.add(new JLabel("Thương hiệu:"));
+                dialog.add(txtThuongHieu);
+                dialog.add(new JLabel("Xuất xứ:"));
+                dialog.add(txtXuatXu);
+                dialog.add(new JLabel("Loại:"));
+                dialog.add(cbLoai);
+                dialog.add(new JLabel("Giới tính:"));
+                dialog.add(txtGioiTinh);
+                dialog.add(new JLabel("Giá bán:"));
+                dialog.add(txtGiaBan);
+                dialog.add(new JLabel("Số lượng:"));
+                dialog.add(txtSoLuong);
+                dialog.add(new JLabel("Hình ảnh:"));
+                dialog.add(txtHinhAnh);
+                dialog.add(new JLabel("Mô tả:"));
+                dialog.add(txtMoTa);
+                dialog.add(new JLabel("Nhà cung cấp:"));
+                dialog.add(cbNCC);
 
                 JButton btnSave = new JButton("Lưu");
                 JButton btnCancel = new JButton("Hủy");
@@ -897,45 +1014,66 @@ public class PnSanPham extends javax.swing.JPanel {
                 dialog.add(btnSave);
                 dialog.add(btnCancel);
 
-                // Sự kiện nút Hủy
-                btnCancel.addActionListener(e -> dialog.dispose());
-
-                // Sự kiện nút Lưu
-                btnSave.addActionListener(e -> {
-                        if ((Integer.parseInt(txtLoai.getText()) <= 0) || (Integer.parseInt(txtLoai.getText()) > 4)) {
-                                JOptionPane.showMessageDialog(dialog, "Mã loại không hợp lệf!");
-                                return;
-                        }
-                        if ((Integer.parseInt(txtNCC.getText()) <= 0) || (Integer.parseInt(txtNCC.getText()) > 4)) {
-                                JOptionPane.showMessageDialog(dialog, "Mã nhà cung cấp không hợp lệ!");
-                                return;
-                        }
-                        p.setTenSP(txtTenSP.getText());
-                        p.setThuongHieu(txtThuongHieu.getText());
-                        p.setXuatXu(txtXuatXu.getText());
-                        p.setMaLoai(Integer.parseInt(txtLoai.getText()));
-                        p.setGioiTinh(txtGioiTinh.getText());
-                        p.setGiaBan(Float.parseFloat(txtGiaBan.getText()));
-                        p.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
-                        p.setHinhAnh(txtHinhAnh.getText());
-                        p.setMoTa(txtMoTa.getText());
-                        p.setMaNCC(Integer.parseInt(txtNCC.getText()));
-
-                        SanPhamBUS bus = new SanPhamBUS();
-                        boolean result = bus.updateSanPham(p);
-
-                        if (result) {
-                                JOptionPane.showMessageDialog(dialog, "Cập nhật thành công!");
+                // Sự kiện các nút
+                btnSave.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Product newp = new Product();
+                    newp.setTenSP(txtTenSP.getText());
+                    newp.setThuongHieu(txtThuongHieu.getText());
+                    newp.setXuatXu(txtXuatXu.getText());
+                    String loai = cbLoai.getSelectedItem().toString();
+                    int maLoaiTmp = 0; 
+                    switch (loai) {
+                        case "Hand-Winding":
+                            maLoaiTmp = 1;
+                            break;
+                        case "Automatic":
+                            maLoaiTmp = 2;
+                            break;
+                        case "Đồng hồ cơ lai":
+                            maLoaiTmp = 3;
+                            break;
+                        default:
+                            maLoaiTmp = 0; 
+                            break;
+                    }
+                     
+                    newp.setMaLoai(maLoaiTmp);
+                    newp.setGioiTinh(txtGioiTinh.getText());
+                    newp.setGiaBan(Float.valueOf(txtGiaBan.getText()));
+                    newp.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                    newp.setHinhAnh(txtHinhAnh.getText());
+                    newp.setMoTa(txtMoTa.getText());
+                    int maNccTmp = 0;
+                    if(cbNCC.getSelectedItem()== "Orient Japan"){
+                        maNccTmp = 4;
+                    }else if(cbNCC.getSelectedItem()== "Seiko Watch Corp"){
+                        maNccTmp = 5;
+                    };
+                    newp.setMaNCC(maNccTmp);
+                    
+                    SanPhamBUS bus = new SanPhamBUS();
+                    int result = bus.insertSanPham(newp);
+                    if (result > 0) {
+                                JOptionPane.showMessageDialog(dialog, "Thêm thành công!");
+                                ProductDetail pd = new ProductDetail(result);
+                                CTSanPhamBUS ctbus = new CTSanPhamBUS();
+                                boolean rs = ctbus.insertCTSanPham(pd);
+                                if(rs){
+                                    JOptionPane.showMessageDialog(dialog, "Tạo mới chi tiết!");
+                                } 
                                 loadDataToTable();
                         } else {
-                                JOptionPane.showMessageDialog(dialog, "Cập nhật thất bại!");
+                                JOptionPane.showMessageDialog(dialog, "Thêm thất bại!");
                         }
-
-                        dialog.dispose();
-                });
-
+                    dialog.dispose();
+                }
+            });
+                btnCancel.addActionListener(e -> dialog.dispose());
+                // setvisible
                 dialog.setLocationRelativeTo(this);
                 dialog.setVisible(true);
-        }
 
+        }
 }

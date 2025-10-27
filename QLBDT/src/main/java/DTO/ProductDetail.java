@@ -26,16 +26,34 @@ public class ProductDetail {
     private String ChucNangKhac;
     private String BaoHanh;
     private String MauMatSo;
-    private String TrongLuong;
+    private Float TrongLuong;
 
     // Constructor
     public ProductDetail() {
     }
 
+    public ProductDetail(int ID) {
+        this.ID = ID;
+        this.DuongKinhMat = "";
+        this.DoDayMat = "";
+        this.ChatLieuVo = "";
+        this.ChatLieuDay = "";
+        this.KieuMat = "";
+        this.Kinh = "";
+        this.BoMay = "";
+        this.NangLuongCo = "";
+        this.ThoiGianTruCoc = "";
+        this.DoChiuNuoc = "";
+        this.ChucNangKhac = "";
+        this.BaoHanh = "";
+        this.MauMatSo = "";
+        this.TrongLuong = 0f;
+    }
+
     public ProductDetail(int MaCTSP, int ID, String DuongKinhMat, String DoDayMat, String ChatLieuVo,
             String ChatLieuDay, String KieuMat, String Kinh, String BoMay, String NangLuongCo,
             String ThoiGianTruCoc, String DoChiuNuoc, String ChucNangKhac, String BaoHanh,
-            String MauMatSo, String TrongLuong) {
+            String MauMatSo, Float TrongLuong) {
         this.MaCTSP = MaCTSP;
         this.ID = ID;
         this.DuongKinhMat = DuongKinhMat;
@@ -175,11 +193,11 @@ public class ProductDetail {
         this.MauMatSo = MauMatSo;
     }
 
-    public String getTrongLuong() {
+    public Float getTrongLuong() {
         return TrongLuong;
     }
 
-    public void setTrongLuong(String TrongLuong) {
+    public void setTrongLuong(Float TrongLuong) {
         this.TrongLuong = TrongLuong;
     }
 }
