@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBConnect {
 
     // ✅ Thông tin kết nối SQL Server
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=QLBanDienThoai;encrypt=false";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=QLBanDongHo;encrypt=false";
     private static final String USER = "sa";
     private static final String PASSWORD = "12345";
 

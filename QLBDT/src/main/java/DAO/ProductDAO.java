@@ -16,15 +16,17 @@ public class ProductDAO {
             ResultSet rs = stmt.executeQuery("SELECT * FROM SanPham");
             while (rs.next()) {
                 list.add(new Product(
-                    rs.getInt("MaSP"),
+                    rs.getInt("ID"),
                     rs.getString("TenSP"),
+                    rs.getString("ThuongHieu"),
+                    rs.getString("XuatXu"),
                     rs.getInt("MaLoai"),
-                    rs.getInt("MaNCC"),
+                    rs.getString("GioiTinh"),
+                    rs.getFloat("GiaBan"),
                     rs.getInt("SoLuong"),
                     rs.getString("HinhAnh"),
-                    rs.getFloat("DonGia"),
                     rs.getString("MoTa"),
-                    
+                    rs.getInt("maNCC"),
                     rs.getBoolean("TrangThai")
                 ));
             }

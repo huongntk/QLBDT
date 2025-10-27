@@ -1,0 +1,113 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package DAO;
+
+import DTO.Product;
+import UTIL.DBConnect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author ltd96
+ *         PRODUCT DATA ACCESS OBJECT
+ */
+public class SanphamDAO {
+    public ArrayList<Product> getALL() {
+        ArrayList<Product> listTmp = new ArrayList();
+        try (Connection conn = DBConnect.getConnection()) {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM SanPham WHERE TrangThai = 1");
+            while (rs.next()) {
+                Product p = new Product();
+                p.setID(rs.getInt("ID"));
+                p.setTenSP(rs.getString("TenSP"));
+                p.setThuongHieu(rs.getString("ThuongHieu"));
+                p.setXuatXu(rs.getString("XuatXu"));
+                p.setMaLoai(rs.getInt("MaLoai"));
+                p.setGioiTinh(rs.getString("GioiTinh"));
+                p.setGiaBan(rs.getFloat("GiaBan"));
+                p.setSoLuong(rs.getInt("SoLuong"));
+                p.setHinhAnh(rs.getString("HinhAnh"));
+                p.setMoTa(rs.getString("MoTa"));
+                p.setMaNCC(rs.getInt("maNCC"));
+                p.setTrangThai(rs.getBoolean("TrangThai"));
+                listTmp.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listTmp;
+    }
+
+    public ArrayList<Product> getById(int id) {
+        ArrayList<Product> listTmp = new ArrayList();
+        try (Connection conn = DBConnect.getConnection()) {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM SanPham WHERE ID = " + id + " AND TrangThai = 1");
+            while (rs.next()) {
+                Product p = new Product();
+                p.setID(rs.getInt("ID"));
+                p.setTenSP(rs.getString("TenSP"));
+                p.setThuongHieu(rs.getString("ThuongHieu"));
+                p.setXuatXu(rs.getString("XuatXu"));
+                p.setMaLoai(rs.getInt("MaLoai"));
+                p.setGioiTinh(rs.getString("GioiTinh"));
+                p.setGiaBan(rs.getFloat("GiaBan"));
+                p.setSoLuong(rs.getInt("SoLuong"));
+                p.setHinhAnh(rs.getString("HinhAnh"));
+                p.setMoTa(rs.getString("MoTa"));
+                p.setMaNCC(rs.getInt("maNCC"));
+                p.setTrangThai(rs.getBoolean("TrangThai"));
+                listTmp.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listTmp;
+    }
+
+    public boolean updateSanPham(Product p) {
+        try (Connection conn = DBConnect.getConnection()) {
+            String sql = "UPDATE SanPham SET TenSP=?, ThuongHieu=?, XuatXu=?, MaLoai=?, GioiTinh=?, GiaBan=?, SoLuong=?, HinhAnh=?, MoTa=?, MaNCC=? WHERE ID=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, p.getTenSP());
+            ps.setString(2, p.getThuongHieu());
+            ps.setString(3, p.getXuatXu());
+            ps.setInt(4, p.getMaLoai());
+            ps.setString(5, p.getGioiTinh());
+            ps.setDouble(6, p.getGiaBan());
+            ps.setInt(7, p.getSoLuong());
+            ps.setString(8, p.getHinhAnh());
+            ps.setString(9, p.getMoTa());
+            ps.setInt(10, p.getMaNCC());
+            ps.setInt(11, p.getID());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteById(int id) {
+        try (Connection conn = DBConnect.getConnection()) {
+            Statement st = conn.createStatement();
+            int row = st.executeUpdate("UPDATE SanPham SET TrangThai = 0 WHERE id = " + id);
+            if (row <= 0)
+                return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}

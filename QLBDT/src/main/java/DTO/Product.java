@@ -10,133 +10,135 @@ package DTO;
  *         Product entity class
  */
 public class Product {
-    private int productId;
-    private String productName;
-    private int categoryId; // foreign key to category
-    private int supplierId; // foreign key to supplier
-    private int quantity;
-    private String imgUrl;
-    private float price;
-    private String description;
-    private Boolean status;
+    private int ID;
+    private String TenSP;
+    private String ThuongHieu;
+    private String XuatXu;
+    private int MaLoai;
+    private String GioiTinh;
+    private Float GiaBan;
+    private int SoLuong;
+    private String HinhAnh;
+    private String MoTa;
+    private int maNCC;
+    private Boolean TrangThai;
 
-    // Constructor
+    // Constructor rỗng (mặc định)
     public Product() {
     }
 
-    public Product(int productId, String productName, int categoryId, int supplierId,
-            int quantity, String imgUrl, float price, String description, Boolean status) {
-        this.productId = productId;
-        this.productName = productName;
-        this.categoryId = categoryId;
-        this.supplierId = supplierId;
-        this.quantity = quantity;
-        this.imgUrl = imgUrl;
-        this.price = price;
-        this.description = description;
-        this.status = status;
+    // Constructor đầy đủ
+    public Product(int ID, String TenSP, String ThuongHieu, String XuatXu, int MaLoai,
+            String GioiTinh, Float GiaBan, int SoLuong, String HinhAnh,
+            String MoTa, int maNCC, Boolean TrangThai) {
+        this.ID = ID;
+        this.TenSP = TenSP;
+        this.ThuongHieu = ThuongHieu;
+        this.XuatXu = XuatXu;
+        this.MaLoai = MaLoai;
+        this.GioiTinh = GioiTinh;
+        this.GiaBan = GiaBan;
+        this.SoLuong = SoLuong;
+        this.HinhAnh = HinhAnh;
+        this.MoTa = MoTa;
+        this.maNCC = maNCC;
+        this.TrangThai = TrangThai;
     }
 
-    public Product(int id, String name, int quan, String url, float price, Boolean status) {
-        this.productId = id;
-        this.productName = name;
-        this.quantity = quan;
-        this.imgUrl = url;
-        this.price = price;
-        this.status = status;
+    // Getter và Setter cho từng thuộc tính
+    public int getID() {
+        return ID;
     }
 
-    // GETTER
-    public int getProductId() {
-        return productId;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getTenSP() {
+        return TenSP;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public void setTenSP(String TenSP) {
+        this.TenSP = TenSP;
     }
 
-    public int getSupplierId() {
-        return supplierId;
+    public String getThuongHieu() {
+        return ThuongHieu;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setThuongHieu(String ThuongHieu) {
+        this.ThuongHieu = ThuongHieu;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getXuatXu() {
+        return XuatXu;
     }
 
-    public float getPrice() {
-        return price;
+    public void setXuatXu(String XuatXu) {
+        this.XuatXu = XuatXu;
     }
 
-    public String getDescription() {
-        return description;
+    public int getMaLoai() {
+        return MaLoai;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public void setMaLoai(int MaLoai) {
+        this.MaLoai = MaLoai;
     }
 
-    // SETTER
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public String getGioiTinh() {
+        return GioiTinh;
     }
 
-    public void setProductName(String newName) {
-        this.productName = newName;
+    public void setGioiTinh(String GioiTinh) {
+        this.GioiTinh = GioiTinh;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public Float getGiaBan() {
+        return GiaBan;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setGiaBan(Float GiaBan) {
+        this.GiaBan = GiaBan;
     }
 
-    public void setQuantity(int newQuan) {
-        this.quantity = newQuan;
+    public int getSoLuong() {
+        return SoLuong;
     }
 
-    public void setImgUrl(String newUrl) {
-        this.imgUrl = newUrl;
+    public void setSoLuong(int SoLuong) {
+        this.SoLuong = SoLuong;
     }
 
-    public void setPrice(float newPrice) {
-        this.price = newPrice;
+    public String getHinhAnh() {
+        return HinhAnh;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setHinhAnh(String HinhAnh) {
+        this.HinhAnh = HinhAnh;
     }
 
-    public void setStatus(Boolean newStatus) {
-        this.status = newStatus;
+    public String getMoTa() {
+        return MoTa;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName +
-                ", categoryId=" + categoryId + ", supplierId=" + supplierId +
-                ", quantity=" + quantity + ", imgUrl=" + imgUrl +
-                ", price=" + price + ", description=" + description +
-                ", status=" + status + '}';
+    public void setMoTa(String MoTa) {
+        this.MoTa = MoTa;
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Product other = (Product) obj;
-        return productId == other.productId;
+    public int getMaNCC() {
+        return maNCC;
+    }
+
+    public void setMaNCC(int maNCC) {
+        this.maNCC = maNCC;
+    }
+
+    public Boolean getTrangThai() {
+        return TrangThai;
+    }
+
+    public void setTrangThai(Boolean TrangThai) {
+        this.TrangThai = TrangThai;
     }
 }

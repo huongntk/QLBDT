@@ -10,123 +10,176 @@ package DTO;
  *         ProductDetail entity class
  */
 public class ProductDetail {
-    private int productDetailId;
-    private int productId; // forein key to Product
-    private String imei;
-    private String color;
-    private String storage;
-    private String ram;
-    private String battery;
-    private String os;
-    private int warranty; // month
-    private int status; // 0 = unavailable, 1 = available ...
+    // Attributes
+    private int MaCTSP;
+    private int ID;
+    private String DuongKinhMat;
+    private String DoDayMat;
+    private String ChatLieuVo;
+    private String ChatLieuDay;
+    private String KieuMat;
+    private String Kinh;
+    private String BoMay;
+    private String NangLuongCo;
+    private String ThoiGianTruCoc;
+    private String DoChiuNuoc;
+    private String ChucNangKhac;
+    private String BaoHanh;
+    private String MauMatSo;
+    private String TrongLuong;
 
     // Constructor
     public ProductDetail() {
     }
 
-    public ProductDetail(int productDetailId, int productId, String imei, String color,
-            String storage, String ram, String battery, String os,
-            int warranty, int status) {
-        this.productDetailId = productDetailId;
-        this.productId = productId;
-        this.imei = imei;
-        this.color = color;
-        this.storage = storage;
-        this.ram = ram;
-        this.battery = battery;
-        this.os = os;
-        this.warranty = warranty;
-        this.status = status;
+    public ProductDetail(int MaCTSP, int ID, String DuongKinhMat, String DoDayMat, String ChatLieuVo,
+            String ChatLieuDay, String KieuMat, String Kinh, String BoMay, String NangLuongCo,
+            String ThoiGianTruCoc, String DoChiuNuoc, String ChucNangKhac, String BaoHanh,
+            String MauMatSo, String TrongLuong) {
+        this.MaCTSP = MaCTSP;
+        this.ID = ID;
+        this.DuongKinhMat = DuongKinhMat;
+        this.DoDayMat = DoDayMat;
+        this.ChatLieuVo = ChatLieuVo;
+        this.ChatLieuDay = ChatLieuDay;
+        this.KieuMat = KieuMat;
+        this.Kinh = Kinh;
+        this.BoMay = BoMay;
+        this.NangLuongCo = NangLuongCo;
+        this.ThoiGianTruCoc = ThoiGianTruCoc;
+        this.DoChiuNuoc = DoChiuNuoc;
+        this.ChucNangKhac = ChucNangKhac;
+        this.BaoHanh = BaoHanh;
+        this.MauMatSo = MauMatSo;
+        this.TrongLuong = TrongLuong;
     }
 
-    // GETTER
-    public int getProductDetailId() {
-        return productDetailId;
+    // Getter // Setter
+    public int getMaCTSP() {
+        return MaCTSP;
     }
 
-    public int getProductId() {
-        return productId;
+    public void setMaCTSP(int MaCTSP) {
+        this.MaCTSP = MaCTSP;
     }
 
-    public String getImei() {
-        return imei;
+    public int getID() {
+        return ID;
     }
 
-    public String getColor() {
-        return color;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
-    public String getStorage() {
-        return storage;
+    public String getDuongKinhMat() {
+        return DuongKinhMat;
     }
 
-    public String getRam() {
-        return ram;
+    public void setDuongKinhMat(String DuongKinhMat) {
+        this.DuongKinhMat = DuongKinhMat;
     }
 
-    public String getBattery() {
-        return battery;
+    public String getDoDayMat() {
+        return DoDayMat;
     }
 
-    public String getOs() {
-        return os;
+    public void setDoDayMat(String DoDayMat) {
+        this.DoDayMat = DoDayMat;
     }
 
-    public int getWarranty() {
-        return warranty;
+    public String getChatLieuVo() {
+        return ChatLieuVo;
     }
 
-    public int getStatus() {
-        return status;
+    public void setChatLieuVo(String ChatLieuVo) {
+        this.ChatLieuVo = ChatLieuVo;
     }
 
-    // SETTER
-    public void setProductDetailId(int productDetailId) {
-        this.productDetailId = productDetailId;
+    public String getChatLieuDay() {
+        return ChatLieuDay;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setChatLieuDay(String ChatLieuDay) {
+        this.ChatLieuDay = ChatLieuDay;
     }
 
-    public void setImei(String imei) {
-        this.imei = imei;
+    public String getKieuMat() {
+        return KieuMat;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setKieuMat(String KieuMat) {
+        this.KieuMat = KieuMat;
     }
 
-    public void setStorage(String storage) {
-        this.storage = storage;
+    public String getKinh() {
+        return Kinh;
     }
 
-    public void setRam(String ram) {
-        this.ram = ram;
+    public void setKinh(String Kinh) {
+        this.Kinh = Kinh;
     }
 
-    public void setBattery(String battery) {
-        this.battery = battery;
+    public String getBoMay() {
+        return BoMay;
     }
 
-    public void setOs(String os) {
-        this.os = os;
+    public void setBoMay(String BoMay) {
+        this.BoMay = BoMay;
     }
 
-    public void setWarranty(int warranty) {
-        this.warranty = warranty;
+    public String getNangLuongCo() {
+        return NangLuongCo;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setNangLuongCo(String NangLuongCo) {
+        this.NangLuongCo = NangLuongCo;
     }
 
-    @Override
-    public String toString() {
-        return "ProductDetail{" + "productDetailId=" + productDetailId + ", productId=" + productId +
-                ", imei=" + imei + ", color=" + color + ", storage=" + storage +
-                ", ram=" + ram + ", battery=" + battery + ", os=" + os +
-                ", warranty=" + warranty + ", status=" + status + '}';
+    public String getThoiGianTruCoc() {
+        return ThoiGianTruCoc;
+    }
+
+    public void setThoiGianTruCoc(String ThoiGianTruCoc) {
+        this.ThoiGianTruCoc = ThoiGianTruCoc;
+    }
+
+    public String getDoChiuNuoc() {
+        return DoChiuNuoc;
+    }
+
+    public void setDoChiuNuoc(String DoChiuNuoc) {
+        this.DoChiuNuoc = DoChiuNuoc;
+    }
+
+    public String getChucNangKhac() {
+        return ChucNangKhac;
+    }
+
+    public void setChucNangKhac(String ChucNangKhac) {
+        this.ChucNangKhac = ChucNangKhac;
+    }
+
+    public String getBaoHanh() {
+        return BaoHanh;
+    }
+
+    public void setBaoHanh(String BaoHanh) {
+        this.BaoHanh = BaoHanh;
+    }
+
+    public String getMauMatSo() {
+        return MauMatSo;
+    }
+
+    public void setMauMatSo(String MauMatSo) {
+        this.MauMatSo = MauMatSo;
+    }
+
+    public String getTrongLuong() {
+        return TrongLuong;
+    }
+
+    public void setTrongLuong(String TrongLuong) {
+        this.TrongLuong = TrongLuong;
     }
 }
