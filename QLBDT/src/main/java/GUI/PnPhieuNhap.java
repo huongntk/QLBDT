@@ -13,7 +13,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class PnPhieuNhap extends JFrame {
+public class PnPhieuNhap extends JPanel {
     private PhieuNhapBUS bus = new PhieuNhapBUS();
     private NhaCungCapDAO nccDao = new NhaCungCapDAO();
     private DefaultTableModel model;
@@ -21,14 +21,28 @@ public class PnPhieuNhap extends JFrame {
     private JTextField txtSearch;
 
     public PnPhieuNhap() {
-        setTitle("Quản lý Phiếu Nhập");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 650);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout(8, 8));
-
+//        setTitle("Quản lý Phiếu Nhập");
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setSize(1100, 650);
+//        setLocationRelativeTo(null);
+//        setLayout(new BorderLayout(8, 8));
+//
         Font lblFont = new Font("Segoe UI", Font.PLAIN, 14);
+// Thiết lập kích thước khởi tạo cho panel
+        setPreferredSize(new Dimension(1100, 650));
 
+        // Thiết lập layout (tuỳ bạn muốn dùng kiểu nào)
+        setLayout(new BorderLayout());
+
+        // Thêm các thành phần giao diện
+        JLabel lblTitle = new JLabel("Quản lý Phiếu Nhập", SwingConstants.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+
+        add(lblTitle, BorderLayout.NORTH);
+
+        // ví dụ thêm 1 bảng
+        JTable table = new JTable();
+        add(new JScrollPane(table), BorderLayout.CENTER);
         // TOP: search
         JPanel pnlSearch = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
         pnlSearch.setBackground(Color.WHITE);

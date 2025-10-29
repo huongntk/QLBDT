@@ -394,7 +394,7 @@ private JButton selectedButton = null;
     JPanel QLKhachHang = new PnKhachHang();
     JPanel QLKhuyenMai = new PnKhuyenMai();
     JPanel QLNhanVien = new PnNhanVien();
-    JPanel QLNhapHang = new PnNhapHang();
+    JPanel QLNhapHang = new PnPhieuNhap();
     JPanel QLPhanQuyen = new PnPhanQuyen();
 //    JPanel QLThongKe = new PnThongKe();
     
