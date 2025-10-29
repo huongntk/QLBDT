@@ -10,6 +10,7 @@ import BUS.SanPhamBUS;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import DTO.ProductDetail;
+
+import java.awt.BorderLayout;
 
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -79,10 +82,37 @@ public class PnSanPham extends javax.swing.JPanel {
 
         public PnSanPham() {
                 initComponents();
+                setupCustomLayout();
                 loadDataToTable();
                 loadDetailtoTextField();
         }
+        private void setupCustomLayout() {
+    // 1. Gỡ bỏ layout cũ (GroupLayout)
+    this.removeAll();
 
+    // 2. Thiết lập BorderLayout làm layout mới cho panel chính (this)
+    this.setLayout(new java.awt.BorderLayout(5, 5)); // 5, 5 là khoảng cách
+
+    // 3. Tạo một panel mới (eastPanel) để chứa KHỐI CHI TIẾT
+    // Panel này sẽ chứa jPanel3 VÀ hai nút (jButton6, jButton7)
+    JPanel eastPanel = new JPanel(new java.awt.BorderLayout(5, 5));
+
+    // 3a. Thêm form chi tiết (jPanel3) vào giữa eastPanel
+    eastPanel.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+    // 3b. Tạo một panel mới cho 2 nút "Sửa" và "Lưu"
+    JPanel detailButtonPanel = new JPanel(); // Dùng FlowLayout mặc định
+    detailButtonPanel.add(jButton6);
+    detailButtonPanel.add(jButton7);
+
+    // 3c. Thêm panel 2 nút này vào phía Nam (dưới) của eastPanel
+    eastPanel.add(detailButtonPanel, java.awt.BorderLayout.SOUTH);
+
+    // 4. Thêm các khối chính vào panel (this)
+    this.add(jPanel1, java.awt.BorderLayout.NORTH);  // Thanh công cụ
+    this.add(jPanel2, java.awt.BorderLayout.CENTER); // Bảng dữ liệu (sẽ co giãn)
+    this.add(eastPanel, java.awt.BorderLayout.EAST); // Khối chi tiết
+}
         /**
          * This method is called from within the constructor to initialize the form.
          * WARNING: Do NOT modify this code. The content of this method is always
