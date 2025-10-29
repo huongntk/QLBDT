@@ -79,8 +79,7 @@ public class PnNhaCungCap extends JFrame {
         g.gridx = 0; g.gridy = row; g.gridwidth = 2;
         JPanel pnlAddHolder = new JPanel();
         pnlAddHolder.setOpaque(false);
-        JButton btnThem = createLargeButton("Thêm", "/icon/them.png",
-                new Color(76, 175, 80), new Color(67, 160, 71));
+        JButton btnThem = createClassicButton("Thêm", "/icon/them.png");
         pnlAddHolder.add(btnThem);
         leftPanel.add(pnlAddHolder, g);
 
@@ -104,12 +103,9 @@ public class PnNhaCungCap extends JFrame {
 
         // ===== Bottom Buttons =====
         JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 8));
-        JButton btnSua = createWideButton("Sửa", "/icon/sua.png",
-                new Color(33, 150, 243), new Color(25, 118, 210));
-        JButton btnXoa = createWideButton("Xóa", "/icon/xoa.png",
-                new Color(244, 67, 54), new Color(211, 47, 47));
-        JButton btnLamMoi = createWideButton("Làm mới", "/icon/undo.png",
-                new Color(158, 158, 158), new Color(97, 97, 97));
+        JButton btnSua = createClassicButton("Sửa", "/icon/sua.png");
+        JButton btnXoa = createClassicButton("Xóa", "/icon/xoa.png");
+        JButton btnLamMoi = createClassicButton("Làm mới", "/icon/undo.png");
         pnlBottom.add(btnSua);
         pnlBottom.add(btnXoa);
         pnlBottom.add(btnLamMoi);
@@ -234,43 +230,20 @@ public class PnNhaCungCap extends JFrame {
         chkHoatDong.setSelected(false);
     }
 
-    private JButton createLargeButton(String text, String iconPath, Color bg, Color hover) {
+    // ======== TẠO NÚT PHONG CÁCH CỔ ĐIỂN ========
+    private JButton createClassicButton(String text, String iconPath) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btn.setPreferredSize(new Dimension(200, 54));
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btn.setFocusPainted(false);
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(bg);
+        btn.setPreferredSize(new Dimension(110, 36));
+        btn.setBackground(UIManager.getColor("Button.background"));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(160, 180, 200)));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ImageIcon icon = loadScaledIcon(iconPath, 28, 28);
+        ImageIcon icon = loadScaledIcon(iconPath, 18, 18);
         if (icon != null) btn.setIcon(icon);
         btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-        btn.setIconTextGap(12);
-        addHoverEffect(btn, bg, hover);
+        btn.setIconTextGap(8);
         return btn;
-    }
-
-    private JButton createWideButton(String text, String iconPath, Color bg, Color hover) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btn.setPreferredSize(new Dimension(140, 44));
-        btn.setFocusPainted(false);
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(bg);
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ImageIcon icon = loadScaledIcon(iconPath, 22, 22);
-        if (icon != null) btn.setIcon(icon);
-        btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-        btn.setIconTextGap(10);
-        addHoverEffect(btn, bg, hover);
-        return btn;
-    }
-
-    private void addHoverEffect(JButton btn, Color normal, Color hover) {
-        btn.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { btn.setBackground(hover); }
-            @Override public void mouseExited(MouseEvent e) { btn.setBackground(normal); }
-        });
     }
 
     private ImageIcon loadScaledIcon(String path, int w, int h) {
