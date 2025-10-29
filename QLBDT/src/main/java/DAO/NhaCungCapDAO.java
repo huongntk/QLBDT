@@ -6,27 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhaCungCapDAO {
-    private Connection conn;
 
-    public NhaCungCapDAO() {
-        try {
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=QLBanDongHo;encrypt=false";
-            String user = "sa";
-            String pass = "123456"; // 🔸 đổi nếu bạn đặt khác
-            conn = DriverManager.getConnection(url, user, pass);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("❌ Không thể kết nối SQL Server!");
-        }
-    }
-
-
+    //Lấy toàn bộ danh sách nhà cung cấp
     public ArrayList<NhaCungCapDTO> getAll() {
         ArrayList<NhaCungCapDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM NhaCungCap";
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
+
+        try (ResultSet rs = DataProvider.executeQuery(sql)) {
+            while (rs != null && rs.next()) {
                 NhaCungCapDTO ncc = new NhaCungCapDTO(
                         rs.getInt("MaNCC"),
                         rs.getString("TenNCC"),
@@ -37,49 +24,62 @@ public class NhaCungCapDAO {
                 list.add(ncc);
             }
         } catch (SQLException e) {
+            System.err.println("❌ Lỗi khi lấy danh sách nhà cung cấp:");
             e.printStackTrace();
         }
         return list;
     }
 
+    // Thêm nhà cung cấp
     public boolean insert(NhaCungCapDTO ncc) {
         String sql = "INSERT INTO NhaCungCap (TenNCC, DiaChi, SoDienThoai, TrangThai) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, ncc.getTenNCC());
-            ps.setString(2, ncc.getDiaChi());
-            ps.setString(3, ncc.getSoDienThoai());
-            ps.setBoolean(4, ncc.isTrangThai());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        int rows = DataProvider.executeUpdate(sql,
+                ncc.getTenNCC(),
+                ncc.getDiaChi(),
+                ncc.getSoDienThoai(),
+                ncc.isTrangThai()
+        );
+        return rows > 0;
     }
 
+    // cập nhật thông tin nhà cung cấp
     public boolean update(NhaCungCapDTO ncc) {
         String sql = "UPDATE NhaCungCap SET TenNCC=?, DiaChi=?, SoDienThoai=?, TrangThai=? WHERE MaNCC=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, ncc.getTenNCC());
-            ps.setString(2, ncc.getDiaChi());
-            ps.setString(3, ncc.getSoDienThoai());
-            ps.setBoolean(4, ncc.isTrangThai());
-            ps.setInt(5, ncc.getMaNCC());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        int rows = DataProvider.executeUpdate(sql,
+                ncc.getTenNCC(),
+                ncc.getDiaChi(),
+                ncc.getSoDienThoai(),
+                ncc.isTrangThai(),
+                ncc.getMaNCC()
+        );
+        return rows > 0;
     }
 
+    // Xóa nhà cung cấp (đề xuất dùng soft delete để tránh lỗi FK)
     public boolean delete(int maNCC) {
+        //  Nếu muốn “ẩn” thay vì xóa hẳn: đổi thành câu UPDATE TrangThai=0
         String sql = "DELETE FROM NhaCungCap WHERE MaNCC=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maNCC);
-            return ps.executeUpdate() > 0;
+        int rows = DataProvider.executeUpdate(sql, maNCC);
+        return rows > 0;
+    }
+
+    // Lấy 1 nhà cung cấp theo ID
+    public NhaCungCapDTO getById(int maNCC) {
+        String sql = "SELECT * FROM NhaCungCap WHERE MaNCC=?";
+        try (ResultSet rs = DataProvider.executeQuery(sql, maNCC)) {
+            if (rs != null && rs.next()) {
+                return new NhaCungCapDTO(
+                        rs.getInt("MaNCC"),
+                        rs.getString("TenNCC"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getBoolean("TrangThai")
+                );
+            }
         } catch (SQLException e) {
-            System.out.println("❌ Không thể xóa (có thể bị khóa ngoại)");
+            System.err.println("❌ Lỗi khi lấy thông tin NCC theo ID");
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
 }
