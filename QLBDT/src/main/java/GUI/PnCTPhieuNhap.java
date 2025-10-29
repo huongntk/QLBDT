@@ -74,12 +74,10 @@ public class PnCTPhieuNhap extends JFrame {
         g.gridx = 1; leftPanel.add(txtThanhTien, g); row++;
 
         // ===== Nút Lưu chi tiết =====
-        JPanel pnlAddHolder = new JPanel(new GridBagLayout());
+        JPanel pnlAddHolder = new JPanel();
         pnlAddHolder.setOpaque(false);
-        JButton btnLuu = createLargeButton("Lưu chi tiết", "/icon/boxes.png",
-                new Color(76, 175, 80), new Color(67, 160, 71));
+        JButton btnLuu = createClassicButton("Lưu chi tiết", "");
         pnlAddHolder.add(btnLuu);
-
         row++;
         g.gridx = 0; g.gridy = row; g.gridwidth = 2;
         leftPanel.add(pnlAddHolder, g);
@@ -108,21 +106,15 @@ public class PnCTPhieuNhap extends JFrame {
         rightPanel.add(pnlTongTien, BorderLayout.NORTH);
 
         // ===== Nút chức năng phía dưới =====
-        JPanel pnlBottom = new JPanel(new GridBagLayout());
-        pnlBottom.setOpaque(false);
-        GridBagConstraints b = new GridBagConstraints();
-        b.insets = new Insets(0, 12, 0, 12);
-
-        JButton btnSua = createWideButton("Sửa", "/icon/sua.png", new Color(33, 150, 243), new Color(25, 118, 210));
-        JButton btnXoa = createWideButton("Xóa", "/icon/xoa.png", new Color(244, 67, 54), new Color(211, 47, 47));
-        JButton btnLamMoi = createWideButton("Làm mới", "/icon/undo.png", new Color(158, 158, 158), new Color(97, 97, 97));
-        JButton btnNhap = createWideButton("Nhập", "/icon/boxes.png", new Color(0, 150, 136), new Color(0, 121, 107));
-
-        b.gridx = 0; pnlBottom.add(btnSua, b);
-        b.gridx++; pnlBottom.add(btnXoa, b);
-        b.gridx++; pnlBottom.add(btnLamMoi, b);
-        b.gridx++; pnlBottom.add(btnNhap, b); // ✅ Nút Nhập nằm bên phải nút Làm mới
-
+        JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 8));
+        JButton btnSua = createClassicButton("Sửa", "/icon/sua.png");
+        JButton btnXoa = createClassicButton("Xóa", "/icon/xoa.png");
+        JButton btnLamMoi = createClassicButton("Làm mới", "/icon/undo.png");
+        JButton btnNhap = createClassicButton("Nhập", "/icon/boxes.png");
+        pnlBottom.add(btnSua);
+        pnlBottom.add(btnXoa);
+        pnlBottom.add(btnLamMoi);
+        pnlBottom.add(btnNhap);
         rightPanel.add(pnlBottom, BorderLayout.SOUTH);
 
         // ===== Tách hai phần trái - phải =====
@@ -167,68 +159,33 @@ public class PnCTPhieuNhap extends JFrame {
             }
         });
 
-        // ======================================================
-        // SỰ KIỆN NÚT NHẬP (bạn có thể mở form nhập mới hoặc thực thi hành động khác)
-        // ======================================================
-        btnNhap.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Thực hiện chức năng nhập phiếu!");
-        });
+        btnNhap.addActionListener(e -> JOptionPane.showMessageDialog(this, "Thực hiện chức năng nhập phiếu!"));
     }
 
-    // ===== Nút lớn (Lưu) =====
-    private JButton createLargeButton(String text, String iconPath, Color bg, Color hover) {
+    // ===== Nút phong cách cổ điển (đồng bộ với PnNhaCungCap) =====
+    private JButton createClassicButton(String text, String iconPath) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btn.setPreferredSize(new Dimension(200, 54));
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         btn.setFocusPainted(false);
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(bg);
+        btn.setPreferredSize(new Dimension(120, 36));
+        btn.setBackground(UIManager.getColor("Button.background"));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(160, 180, 200)));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ImageIcon icon = loadScaledIcon(iconPath, 28, 28);
+        ImageIcon icon = loadScaledIcon(iconPath, 18, 18);
         if (icon != null) btn.setIcon(icon);
         btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-        btn.setIconTextGap(12);
-        addHoverEffect(btn, bg, hover);
+        btn.setIconTextGap(8);
         return btn;
     }
 
-    // ===== Nút nhỏ (Sửa, Xóa, Làm mới, Nhập) =====
-    private JButton createWideButton(String text, String iconPath, Color bg, Color hover) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btn.setPreferredSize(new Dimension(140, 44));
-        btn.setFocusPainted(false);
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(bg);
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ImageIcon icon = loadScaledIcon(iconPath, 22, 22);
-        if (icon != null) btn.setIcon(icon);
-        btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-        btn.setIconTextGap(10);
-        addHoverEffect(btn, bg, hover);
-        return btn;
-    }
-
-    // ===== Hiệu ứng hover =====
-    private void addHoverEffect(JButton btn, Color normal, Color hover) {
-        btn.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) { btn.setBackground(hover); }
-            @Override public void mouseExited(MouseEvent e) { btn.setBackground(normal); }
-        });
-    }
-
-    // ===== Load icon từ /icon/ =====
-    private ImageIcon loadScaledIcon(String resourcePath, int w, int h) {
+    // ===== Load icon =====
+    private ImageIcon loadScaledIcon(String path, int w, int h) {
         try {
-            URL url = getClass().getResource(resourcePath);
-            if (url == null) {
-                System.err.println("Không tìm thấy icon: " + resourcePath);
-                return null;
-            }
+            URL url = getClass().getResource(path);
+            if (url == null) return null;
             Image img = new ImageIcon(url).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
             return new ImageIcon(img);
         } catch (Exception ex) {
-            ex.printStackTrace();
             return null;
         }
     }
