@@ -95,7 +95,7 @@ public class PnPhanQuyen extends javax.swing.JPanel{
         pnlCenter.setLayout(new javax.swing.BoxLayout(pnlCenter, javax.swing.BoxLayout.Y_AXIS));
 
         cboQuyen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cboQuyen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Chọn quyền --", " " }));
+        cboQuyen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Chọn quyền --" }));
         cboQuyen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         cboQuyen.setMaximumSize(new java.awt.Dimension(180, 30));
         cboQuyen.setPreferredSize(new java.awt.Dimension(180, 26));
