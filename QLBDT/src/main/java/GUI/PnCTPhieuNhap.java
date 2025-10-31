@@ -194,3 +194,4 @@ public class PnCTPhieuNhap extends JFrame {
         SwingUtilities.invokeLater(() -> new PnCTPhieuNhap().setVisible(true));
     }
 }
+//namamsnsdfsdjfl
