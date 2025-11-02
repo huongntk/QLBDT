@@ -208,7 +208,6 @@ public class PnNhanVien extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         btnGroupGioiTinh = new javax.swing.ButtonGroup();
@@ -248,85 +247,85 @@ public class PnNhanVien extends javax.swing.JPanel {
 
         pnlThongTin.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(204, 204, 204)));
 
-        lblTieuDeThongTin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTieuDeThongTin.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lblTieuDeThongTin.setText("Thông tin nhân viên");
 
-        lblMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblMaNV.setText("Mã nhân viên:");
 
         txtMaNV.setEditable(false);
-        txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
-        lblHo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblHo.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblHo.setText("Họ:");
 
-        txtHo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtHo.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
-        lblTen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTen.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblTen.setText("Tên:");
 
-        txtTen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTen.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
-        lblSoDienThoai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSoDienThoai.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblSoDienThoai.setText("Số điện thoại:");
 
-        txtSoDienThoai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSoDienThoai.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
-        lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblGioiTinh.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblGioiTinh.setText("Giới tính:");
 
         btnGroupGioiTinh.add(rdoNam);
-        rdoNam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdoNam.setFont(new java.awt.Font("Segoe UI", 0, 14));
         rdoNam.setSelected(true);
         rdoNam.setText("Nam");
 
         btnGroupGioiTinh.add(rdoNu);
-        rdoNu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdoNu.setFont(new java.awt.Font("Segoe UI", 0, 14));
         rdoNu.setText("Nữ");
 
-        lblChucVu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblChucVu.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblChucVu.setText("Chức vụ:");
 
-        cboChucVu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboChucVu.setFont(new java.awt.Font("Segoe UI", 0, 14));
         cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản trị viên", "Nhân viên bán hàng" }));
 
-        lblTrangThai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTrangThai.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblTrangThai.setText("Trạng thái:");
 
         btnGroupTrangThai.add(rdoDangLam);
-        rdoDangLam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdoDangLam.setFont(new java.awt.Font("Segoe UI", 0, 14));
         rdoDangLam.setSelected(true);
         rdoDangLam.setText("Đang làm");
 
         btnGroupTrangThai.add(rdoNghiViec);
-        rdoNghiViec.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rdoNghiViec.setFont(new java.awt.Font("Segoe UI", 0, 14));
         rdoNghiViec.setText("Nghỉ việc");
 
-        btnThem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/them.png"))); // NOI18N
+        btnThem.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/them.png")));
         btnThem.setText("Thêm");
 
-        btnSua.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/sua.png"))); // NOI18N
+        btnSua.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/sua.png")));
         btnSua.setText("Sửa");
 
-        btnXoa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/xoa.png"))); // NOI18N
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/xoa.png")));
         btnXoa.setText("Xóa");
 
-        btnLamMoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnLamMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh.png"))); // NOI18N
+        btnLamMoi.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        btnLamMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh.png")));
         btnLamMoi.setText("Làm mới");
 
-        lblMatKhau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMatKhau.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblMatKhau.setText("Mật khẩu:");
 
-        txtMatKhau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtMatKhau.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
-        lblTenTaiKhoan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTenTaiKhoan.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblTenTaiKhoan.setText("Tên tài khoản:");
 
-        txtTenTaiKhoan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTenTaiKhoan.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
         javax.swing.GroupLayout pnlThongTinLayout = new javax.swing.GroupLayout(pnlThongTin);
         pnlThongTin.setLayout(pnlThongTinLayout);
@@ -435,10 +434,10 @@ public class PnNhanVien extends javax.swing.JPanel {
 
         pnlBang.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(204, 204, 204)));
 
-        lblTieuDeBang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTieuDeBang.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lblTieuDeBang.setText("Danh sách nhân viên");
 
-        tblNhanVien.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblNhanVien.setFont(new java.awt.Font("Segoe UI", 0, 14));
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -462,10 +461,10 @@ public class PnNhanVien extends javax.swing.JPanel {
         tblNhanVien.setShowVerticalLines(true);
         jScrollPane1.setViewportView(tblNhanVien);
 
-        lblTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14));
         lblTimKiem.setText("Tìm kiếm:");
 
-        txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14));
 
         javax.swing.GroupLayout pnlBangLayout = new javax.swing.GroupLayout(pnlBang);
         pnlBang.setLayout(pnlBangLayout);
@@ -520,10 +519,9 @@ public class PnNhanVien extends javax.swing.JPanel {
                     .addComponent(pnlThongTin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-    }// </editor-fold>                        
+    }
 
 
-    // Variables declaration - do not modify                     
     private javax.swing.ButtonGroup btnGroupGioiTinh;
     private javax.swing.ButtonGroup btnGroupTrangThai;
     private javax.swing.JButton btnLamMoi;
@@ -558,5 +556,4 @@ public class PnNhanVien extends javax.swing.JPanel {
     private javax.swing.JTextField txtTen;
     private javax.swing.JTextField txtTenTaiKhoan;
     private javax.swing.JTextField txtTimKiem;
-    // End of variables declaration                   
 }

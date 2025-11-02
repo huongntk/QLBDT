@@ -1,7 +1,7 @@
 package DAO;
 
 import DTO.NhanVienDTO;
-import UTIL.DBConnect;
+import UTIL.DBConnect; 
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,17 +12,20 @@ import java.util.ArrayList;
 
 public class NhanVienDAO {
 
+  
     public ArrayList<NhanVienDTO> layDanhSachNhanVien() {
         ArrayList<NhanVienDTO> danhSach = new ArrayList<>();
         String sql = "SELECT nv.*, tk.TaiKhoan, tk.MatKhau " +
                      "FROM NhanVien nv " +
                      "JOIN TaiKhoan tk ON nv.MaNV = tk.MaNV";
+        ResultSet rs = null;
 
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try {
+            
+            rs = DataProvider.executeQuery(sql);
 
-            while (rs.next()) {
+            
+            while (rs != null && rs.next()) {
                 NhanVienDTO nv = new NhanVienDTO(
                         rs.getInt("MaNV"),
                         rs.getString("Ho"),
@@ -38,29 +41,57 @@ public class NhanVienDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+           
+            if (rs != null) {
+                try {
+                    Statement stmt = rs.getStatement();
+                    Connection conn = stmt.getConnection();
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return danhSach;
     }
 
+ 
     public boolean kiemTraTenTaiKhoan(String tenTaiKhoan, int maNV) {
         String sql = "SELECT COUNT(*) FROM TaiKhoan WHERE TaiKhoan = ? AND MaNV != ?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        ResultSet rs = null;
+        boolean exists = false;
+
+        try {
+           
+            rs = DataProvider.executeQuery(sql, tenTaiKhoan, maNV);
             
-            ps.setString(1, tenTaiKhoan);
-            ps.setInt(2, maNV); 
             
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0; 
-                }
+            if (rs != null && rs.next()) {
+                exists = rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            
+            if (rs != null) {
+                try {
+                    Statement stmt = rs.getStatement();
+                    Connection conn = stmt.getConnection();
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return false; 
+        return exists;
     }
 
+ 
     public boolean themNhanVien(NhanVienDTO nv) {
         String sqlNhanVien = "INSERT INTO NhanVien (Ho, Ten, GioiTinh, SoDienThoai, ChucVu, TrangThai) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlTaiKhoan = "INSERT INTO TaiKhoan (MaNV, TaiKhoan, MatKhau, Quyen, TrangThai) VALUES (?, ?, ?, ?, ?)";
@@ -74,6 +105,7 @@ public class NhanVienDAO {
             conn = DBConnect.getConnection();
             conn.setAutoCommit(false); 
 
+           
             psNhanVien = conn.prepareStatement(sqlNhanVien, Statement.RETURN_GENERATED_KEYS);
             psNhanVien.setString(1, nv.getHo());
             psNhanVien.setString(2, nv.getTen());
@@ -88,6 +120,7 @@ public class NhanVienDAO {
                 return false;
             }
 
+            
             rsKey = psNhanVien.getGeneratedKeys();
             int maNV = 0;
             if (rsKey.next()) {
@@ -97,6 +130,7 @@ public class NhanVienDAO {
                 return false;
             }
 
+            
             psTaiKhoan = conn.prepareStatement(sqlTaiKhoan);
             psTaiKhoan.setInt(1, maNV);
             psTaiKhoan.setString(2, nv.getTenTaiKhoan());
@@ -124,6 +158,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
+           
             try {
                 if (rsKey != null) rsKey.close();
                 if (psNhanVien != null) psNhanVien.close();
@@ -138,6 +173,7 @@ public class NhanVienDAO {
         }
     }
 
+  
     public boolean suaNhanVien(NhanVienDTO nv) {
         String sqlNhanVien = "UPDATE NhanVien SET Ho = ?, Ten = ?, GioiTinh = ?, SoDienThoai = ?, ChucVu = ?, TrangThai = ? WHERE MaNV = ?";
         String sqlTaiKhoan = "UPDATE TaiKhoan SET TaiKhoan = ?, MatKhau = ?, Quyen = ?, TrangThai = ? WHERE MaNV = ?";
@@ -148,8 +184,9 @@ public class NhanVienDAO {
 
         try {
             conn = DBConnect.getConnection();
-            conn.setAutoCommit(false); 
+            conn.setAutoCommit(false);
 
+            
             psNhanVien = conn.prepareStatement(sqlNhanVien);
             psNhanVien.setString(1, nv.getHo());
             psNhanVien.setString(2, nv.getTen());
@@ -161,6 +198,7 @@ public class NhanVienDAO {
             
             int rowsAffectedNV = psNhanVien.executeUpdate();
 
+           
             psTaiKhoan = conn.prepareStatement(sqlTaiKhoan);
             psTaiKhoan.setString(1, nv.getTenTaiKhoan());
             psTaiKhoan.setString(2, nv.getMatKhau());
@@ -170,7 +208,8 @@ public class NhanVienDAO {
 
             int rowsAffectedTK = psTaiKhoan.executeUpdate();
 
-            if (rowsAffectedNV > 0 || rowsAffectedTK > 0) {
+           
+            if (rowsAffectedNV > 0 || rowsAffectedTK > 0) { 
                 conn.commit(); 
                 return true;
             } else {
@@ -189,6 +228,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
+           
             try {
                 if (psNhanVien != null) psNhanVien.close();
                 if (psTaiKhoan != null) psTaiKhoan.close();
@@ -202,6 +242,7 @@ public class NhanVienDAO {
         }
     }
 
+ 
     public boolean xoaNhanVien(int maNV) {
         String sqlNhanVien = "UPDATE NhanVien SET TrangThai = 0 WHERE MaNV = ?";
         String sqlTaiKhoan = "UPDATE TaiKhoan SET TrangThai = 0 WHERE MaNV = ?";
@@ -214,15 +255,18 @@ public class NhanVienDAO {
             conn = DBConnect.getConnection();
             conn.setAutoCommit(false); 
 
+           
             psNhanVien = conn.prepareStatement(sqlNhanVien);
             psNhanVien.setInt(1, maNV);
             int rowsAffectedNV = psNhanVien.executeUpdate();
 
+            
             psTaiKhoan = conn.prepareStatement(sqlTaiKhoan);
             psTaiKhoan.setInt(1, maNV);
             int rowsAffectedTK = psTaiKhoan.executeUpdate();
 
-            if (rowsAffectedNV > 0 && rowsAffectedTK > 0) {
+            
+            if (rowsAffectedNV > 0 && rowsAffectedTK > 0) { 
                 conn.commit(); 
                 return true;
             } else {
@@ -240,6 +284,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
+           
             try {
                 if (psNhanVien != null) psNhanVien.close();
                 if (psTaiKhoan != null) psTaiKhoan.close();
@@ -253,6 +298,7 @@ public class NhanVienDAO {
         }
     }
 
+ 
     public ArrayList<NhanVienDTO> timKiemNhanVien(String tuKhoa) {
         ArrayList<NhanVienDTO> danhSach = new ArrayList<>();
         String sql = "SELECT nv.*, tk.TaiKhoan, tk.MatKhau " +
@@ -263,33 +309,43 @@ public class NhanVienDAO {
                      "OR nv.SoDienThoai LIKE ? " +
                      "OR tk.TaiKhoan LIKE ?";
         
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        ResultSet rs = null;
+        String keyword = "%" + tuKhoa + "%";
+        
+        try {
             
-            String keyword = "%" + tuKhoa + "%";
-            ps.setString(1, keyword);
-            ps.setString(2, keyword);
-            ps.setString(3, keyword);
-            ps.setString(4, keyword);
+            rs = DataProvider.executeQuery(sql, keyword, keyword, keyword, keyword);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    NhanVienDTO nv = new NhanVienDTO(
-                            rs.getInt("MaNV"),
-                            rs.getString("Ho"),
-                            rs.getString("Ten"),
-                            rs.getString("GioiTinh"),
-                            rs.getString("SoDienThoai"),
-                            rs.getString("ChucVu"),
-                            rs.getBoolean("TrangThai"),
-                            rs.getString("TaiKhoan"),
-                            rs.getString("MatKhau")
-                    );
-                    danhSach.add(nv);
-                }
+            
+            while (rs != null && rs.next()) {
+                NhanVienDTO nv = new NhanVienDTO(
+                        rs.getInt("MaNV"),
+                        rs.getString("Ho"),
+                        rs.getString("Ten"),
+                        rs.getString("GioiTinh"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("ChucVu"),
+                        rs.getBoolean("TrangThai"),
+                        rs.getString("TaiKhoan"),
+                        rs.getString("MatKhau")
+                );
+                danhSach.add(nv);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+           
+            if (rs != null) {
+                try {
+                    Statement stmt = rs.getStatement();
+                    Connection conn = stmt.getConnection();
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return danhSach;
     }
