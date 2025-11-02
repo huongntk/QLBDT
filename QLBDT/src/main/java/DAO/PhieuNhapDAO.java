@@ -112,4 +112,37 @@ public class PhieuNhapDAO {
         int rows = DataProvider.executeUpdate(sql, tongTien, maPN);
         return rows > 0;
     }
+        // Tìm kiếm (theo MaPN giả lập, hoặc theo MaNCC)
+    public List<PhieuNhapDTO> search(String key) {
+        List<PhieuNhapDTO> list = new ArrayList<>();
+        // key có thể là mã ảo 100000+MaPN hoặc MaPN thật hoặc MaNCC
+        // Ta cố gắng parse số:
+        Integer parsedInt = null;
+        try { parsedInt = Integer.parseInt(key); } catch (Exception ignore) {}
+        String sql;
+        if (parsedInt != null) {
+            sql = "SELECT MaPN, MaNCC, NgayLap, TongTien "
+                + "FROM PhieuNhap "
+                + "WHERE MaPN = ? OR MaNCC = ? "
+                + "ORDER BY MaPN DESC";
+            try (ResultSet rs = DataProvider.executeQuery(sql, parsedInt, parsedInt)) {
+                while (rs.next()) {
+                    PhieuNhapDTO pn = new PhieuNhapDTO(
+                            rs.getInt("MaPN"),
+                            rs.getObject("MaNCC")==null?null:rs.getInt("MaNCC"),
+                            rs.getDate("NgayLap"),
+                            rs.getDouble("TongTien")
+                    );
+                    list.add(pn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // nếu key không phải số -> tạm thời trả tất cả
+            return getAll();
+        }
+        return list;
+    }
+
 }

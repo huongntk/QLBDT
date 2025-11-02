@@ -30,6 +30,30 @@ public class NhaCungCapDAO {
         return list;
     }
 
+    
+    // Lấy chỉ NCC đang hoạt động (TrangThai = 1)
+    public List<NhaCungCapDTO> getActive() {
+        List<NhaCungCapDTO> list = new ArrayList<>();
+        String sql = "SELECT MaNCC, TenNCC, DiaChi, SoDienThoai, TrangThai " +
+                     "FROM NhaCungCap WHERE TrangThai = 1";
+
+        try (ResultSet rs = DataProvider.executeQuery(sql)) {
+            while (rs.next()) {
+                NhaCungCapDTO n = new NhaCungCapDTO();
+                n.setMaNCC(rs.getInt("MaNCC"));
+                n.setTenNCC(rs.getString("TenNCC"));
+                n.setDiaChi(rs.getString("DiaChi"));
+                n.setSoDienThoai(rs.getString("SoDienThoai"));
+                n.setTrangThai(rs.getBoolean("TrangThai"));
+                list.add(n);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     // Thêm nhà cung cấp
     public boolean insert(NhaCungCapDTO ncc) {
         String sql = "INSERT INTO NhaCungCap (TenNCC, DiaChi, SoDienThoai, TrangThai) VALUES (?, ?, ?, ?)";

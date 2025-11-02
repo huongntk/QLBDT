@@ -59,7 +59,7 @@ public class NhaCungCapDTO {
     @Override
     public String toString() {
         // Hiển thị tên nhà cung cấp trong JComboBox
-        return tenNCC == null ? ("NCC#" + maNCC) : tenNCC;
+        return tenNCC != null ? tenNCC : ("NCC #" + maNCC);
     }
 
 }
