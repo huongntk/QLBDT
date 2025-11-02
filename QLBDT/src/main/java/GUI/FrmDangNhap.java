@@ -6,6 +6,7 @@ package GUI;
 import BUS.TaiKhoanBUS;
 import DTO.TaiKhoan;
 import DAO.TaiKhoanDAO;
+import UTIL.Auth;
 import javax.swing.JOptionPane;
 public class FrmDangNhap extends javax.swing.JFrame {
 
@@ -143,13 +144,20 @@ public class FrmDangNhap extends javax.swing.JFrame {
         if (tk != null) {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 
+            
+            Auth.maNV = tk.getMaNV();
+            Auth.quyen = tk.getQuyen();
+            
             // Mở giao diện chính và truyền quyền
             MainFrame main = new MainFrame(tk);
             main.setVisible(true);
+
             this.dispose(); // đóng form đăng nhập
         } else {
             JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!");
         }
+        
+        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
