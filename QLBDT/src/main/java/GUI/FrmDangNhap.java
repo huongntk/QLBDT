@@ -3,16 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
+import BUS.PhanQuyenBUS;
 import BUS.TaiKhoanBUS;
 import DTO.TaiKhoan;
 import DAO.TaiKhoanDAO;
-import UTIL.Auth;
+import DTO.PhanQuyen;
 import javax.swing.JOptionPane;
 public class FrmDangNhap extends javax.swing.JFrame {
 
     public FrmDangNhap() {
         initComponents();
         setLocationRelativeTo(null);
+        setupEnterKeyNavigation();
     }
 
 
@@ -34,7 +36,7 @@ public class FrmDangNhap extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(170, 222, 215));
 
         btnShowHide.setBackground(new java.awt.Color(170, 222, 215));
-        btnShowHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/read.png"))); // NOI18N
+        btnShowHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search.png"))); // NOI18N
         btnShowHide.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnShowHide.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,9 +85,9 @@ public class FrmDangNhap extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(txtUser))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnShowHide, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 176, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -106,7 +108,7 @@ public class FrmDangNhap extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnShowHide, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                .addGap(57, 57, 57)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(67, Short.MAX_VALUE))
         );
@@ -125,12 +127,25 @@ public class FrmDangNhap extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setupEnterKeyNavigation() {
+        // 1. Tên đăng nhập -> Mật khẩu
+        txtUser.addActionListener(e -> {
+            txtPass.requestFocusInWindow();
+        });
+
+        // 2. Mật khẩu -> Nút Đăng nhập
+        txtPass.addActionListener(e -> {
+            btnLogin.doClick(); // Kích hoạt nút Đăng nhập
+        });
+    }
     private void btnShowHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowHideActionPerformed
         // TODO add your handling code here:
-        if (txtPass.getEchoChar() == '*') {
+        if (txtPass.getEchoChar() == '•') {
             txtPass.setEchoChar((char) 0); // hiện mật khẩu
+            btnShowHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/read.png")));
         } else {
-            txtPass.setEchoChar('*'); // ẩn mật khẩu
+            txtPass.setEchoChar('•'); // ẩn mật khẩu
+            btnShowHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search.png")));
         }
     }//GEN-LAST:event_btnShowHideActionPerformed
 
@@ -138,26 +153,33 @@ public class FrmDangNhap extends javax.swing.JFrame {
         String user = txtUser.getText().trim();
         String pass = new String(txtPass.getPassword());
 
-        TaiKhoanBUS bus = new TaiKhoanBUS();
-        TaiKhoan tk = bus.dangNhap(user, pass);
+        TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+        PhanQuyenBUS pqBUS = new PhanQuyenBUS();
+        TaiKhoan tk = tkBUS.dangNhap(user, pass);
         
-        if (tk != null) {
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+        if (tk == null) {
+            // 2. Nếu trả về NULL, hiển thị thông báo lỗi
+            // Logic kiểm tra rỗng nằm trong tkBUS.dangNhap()
 
-            
-            Auth.maNV = tk.getMaNV();
-            Auth.quyen = tk.getQuyen();
-            
-            // Mở giao diện chính và truyền quyền
-            MainFrame main = new MainFrame(tk);
-            main.setVisible(true);
+            // Tuy nhiên, tkBUS.dangNhap() chỉ in lỗi ra console. 
+            // Ta cần phải đọc lỗi đó từ BUS, hoặc thực hiện lại kiểm tra đơn giản tại đây:
 
-            this.dispose(); // đóng form đăng nhập
+            if (user.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập!", "Lỗi Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            } else if (pass.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!", "Lỗi Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            }
+
         } else {
-            JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!");
+            // 3. Đăng nhập thành công: Lấy quyền và mở MainFrame
+            PhanQuyen pq = pqBUS.getPhanQuyen(tk.getQuyen());
+
+            MainFrame main = new MainFrame(tk, pq);
+            main.setVisible(true);
+            this.dispose(); // Đóng cửa sổ đăng nhập
         }
-        
-        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
@@ -189,6 +211,7 @@ public class FrmDangNhap extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrmDangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

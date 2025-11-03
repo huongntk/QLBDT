@@ -12,20 +12,26 @@ public class PhanQuyen {
     private boolean QLKhachHang;
     private boolean QLThongKe;
     private boolean QLKhuyenMai;
+    private boolean QLPhanQuyen;
     private boolean QLBanHang;
+    
 
     public PhanQuyen() {
     }
 
-    public PhanQuyen(String Quyen, boolean QLNhapHang, boolean QLNhanVien, boolean QLKhachHang, boolean QLThongKe, boolean QLKhuyenMai, boolean QLBanHang) {
+    public PhanQuyen(String Quyen, boolean QLNhapHang, boolean QLSanPham, boolean QLNhanVien, boolean QLKhachHang, boolean QLThongKe, boolean QLKhuyenMai, boolean QLBanHang, boolean QLPhanQuyen) {
         this.Quyen = Quyen;
         this.QLNhapHang = QLNhapHang;
+        this.QLSanPham = QLSanPham;
         this.QLNhanVien = QLNhanVien;
         this.QLKhachHang = QLKhachHang;
         this.QLThongKe = QLThongKe;
         this.QLKhuyenMai = QLKhuyenMai;
+        this.QLPhanQuyen = QLPhanQuyen;
         this.QLBanHang = QLBanHang;
+        
     }
+ 
 
     public String getQuyen() {
         return Quyen;
@@ -91,5 +97,13 @@ public class PhanQuyen {
         this.QLSanPham = QLSanPham;
     }
     
+    public boolean isQLPhanQuyen() {
+        return QLPhanQuyen;
+    }
+
+    public void setQLPhanQuyen(boolean QLPhanQuyen) {
+        this.QLPhanQuyen = QLPhanQuyen;
+    }
+
     
 }

@@ -8,35 +8,46 @@ import java.util.ArrayList;
 public class PhanQuyenBUS {
     private PhanQuyenDAO pqDAO = new PhanQuyenDAO();
     
-    public boolean[] layQuyen(String Quyen) {
-        return pqDAO.getQuyen(Quyen);
+    public PhanQuyen getPhanQuyen(String quyen){
+        return pqDAO.getPhanQuyen(quyen);
     }
+    
+//    public boolean[] layQuyen(String Quyen) {
+//        return pqDAO.getQuyen(Quyen);
+//    }
     
     public ResultSet layDanhSachQuyen() {
         return pqDAO.getDanhSachQuyen();
     }
     
-    public ArrayList<PhanQuyen> getAll(){
-        return pqDAO.getAll();
+//    public ArrayList<PhanQuyen> getAll(){
+//        return pqDAO.getAll();
+//    }
+    
+    public boolean updateQuyen(String Quyen, boolean qlBanHang,boolean qlSanPham, boolean qlKhachHang, boolean qlNhanVien,
+                                        boolean qlNhapHang, boolean qlKhuyenMai, boolean qlPhanQuyen, boolean qlThongKe) {
+        return pqDAO.updateQuyen(Quyen, qlBanHang, qlSanPham, qlKhachHang, qlNhanVien, qlNhapHang,  qlKhuyenMai, qlPhanQuyen, qlThongKe);
     }
     
-    public boolean themHoacCapNhatQuyen(String Quyen, boolean qlBanHang, boolean qlNhapHang,
-                                        boolean qlNhanVien, boolean qlSanPham, boolean qlKhachHang, boolean qlKhuyenMai, boolean qlThongKe) {
-        return pqDAO.insertOrUpdateQuyen(Quyen, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlKhuyenMai, qlThongKe);
-    }
-    
-    public boolean capNhatQuyen(String Quyen, boolean qlBanHang, boolean qlNhapHang,
-                       boolean qlNhanVien, boolean qlSanPham, boolean qlKhachHang, boolean qlThongKe) {
-        return pqDAO.updateQuyen(Quyen, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlThongKe);
+    public boolean insertQuyen(DTO.PhanQuyen pq) {
+//        // Kiểm tra quyền đã tồn tại chưa
+//        if (pqDAO.getPhanQuyen(Quyen) != null) { 
+//            return false; // Trả về false nếu tên quyền đã tồn tại
+//        }
+        return pqDAO.insertQuyen(pq); // Gọi hàm INSERT (add) trong DAO
     }
 
     public boolean xoaQuyen(String Quyen) {
+        //Không được vô hiệu hóa quyền "admin"
+        if(Quyen.equalsIgnoreCase("admin")){
+            return false;
+        }
         return pqDAO.deleteQuyen(Quyen);
     }
 
     
-    public boolean update(PhanQuyen pq){
-        return pqDAO.update(pq);
-    }
+//    public boolean update(PhanQuyen pq){
+//        return pqDAO.update(pq);
+//    }
 }
 

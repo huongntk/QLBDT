@@ -4,64 +4,55 @@
  */
 package GUI;
 
+import DTO.PhanQuyen;
 import DTO.TaiKhoan;
 import java.awt.*;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 
 public class MainFrame extends javax.swing.JFrame {
-
-    private final TaiKhoan currentUser;
+    
+    private TaiKhoan taiKhoan;
+    private PhanQuyen phanQuyen;
     // Biến lưu nút hiện đang được chọn
     private JButton selectedButton = null;
+   
 
-    public MainFrame(TaiKhoan tk) {
+    public MainFrame( TaiKhoan tk, PhanQuyen pq) {
         initComponents();
-
+        
         setExtendedState(MAXIMIZED_BOTH); // Mở toàn màn hình
-        setLocationRelativeTo(null); // Căn giữa
-        this.currentUser = tk;
+        setLocationRelativeTo(null);             // Căn giữa
+        this.taiKhoan = tk;
+        this.phanQuyen = pq;
         txtaccount.setText(tk.getTaiKhoan());
 
         loadMenuByRole(tk.getQuyen());
+        
+        // KÍCH HOẠT CHỨC NĂNG ĐẦU TIÊN
+        openFirstAccessiblePanel();
 
     }
+    
+    
+    
 
     public void loadMenuByRole(String role) {
-
-        btnBanHang.setVisible(false);
-        btnSanPham.setVisible(false);
-        btnKhachHang.setVisible(false);
-        btnNhanVien.setVisible(false);
-        btnNhapHang.setVisible(false);
-        btnPhanQuyen.setVisible(false);
-        btnKhuyenMai.setVisible(false);
-        btnThongKe.setVisible(false);
-        switch (role) {
-            case "Quản trị viên":
-                btnBanHang.setVisible(true);
-                btnSanPham.setVisible(true);
-                btnKhachHang.setVisible(true);
-                btnNhanVien.setVisible(true);
-                btnNhapHang.setVisible(true);
-                btnPhanQuyen.setVisible(true);
-                btnKhuyenMai.setVisible(true);
-                btnThongKe.setVisible(true);
-                break;
-            case "Nhân viên bán hàng":
-                btnBanHang.setVisible(true);
-                btnKhachHang.setVisible(true);
-                break;
-            case "Nhân viên nhập hàng":
-                btnSanPham.setVisible(true);
-                btnNhapHang.setVisible(true);
-                break;
-        }
+        if(phanQuyen == null) return;
+        btnBanHang.setVisible(phanQuyen.isQLBanHang());
+        btnSanPham.setVisible(phanQuyen.isQLSanPham());
+        btnKhachHang.setVisible(phanQuyen.isQLKhachHang());
+        btnNhanVien.setVisible(phanQuyen.isQLNhanVien());
+        btnNhapHang.setVisible(phanQuyen.isQLNhapHang());
+        btnPhanQuyen.setVisible(phanQuyen.isQLPhanQuyen());
+        btnKhuyenMai.setVisible(phanQuyen.isQLKhuyenMai());
+        btnThongKe.setVisible(phanQuyen.isQLThongKe());
+        
+        
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnContent = new javax.swing.JPanel();
@@ -307,100 +298,173 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void openFirstAccessiblePanel() {
+        if (phanQuyen == null) return;
 
-    private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnDoiMatKhauActionPerformed
-        FrmDoiMatKhau dialog = new FrmDoiMatKhau(this, true, currentUser);
-        dialog.setVisible(true);
-    }// GEN-LAST:event_btnDoiMatKhauActionPerformed
+        // Tùy chọn 1: Ưu tiên mở chức năng Bán Hàng
+        if (phanQuyen.isQLBanHang()) {
+            btnBanHang.doClick();
+            return;
+        }
 
-    private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnDangXuatActionPerformed
-        int confirm = JOptionPane.showConfirmDialog(this,
+        // Tùy chọn 2: Nếu không có Bán Hàng, kiểm tra các quyền khác theo thứ tự ưu tiên
+        if (phanQuyen.isQLSanPham()) {
+            btnSanPham.doClick();
+            return;
+        }
+
+        if (phanQuyen.isQLNhapHang()) {
+            btnNhapHang.doClick();
+            return;
+        }
+
+        if (phanQuyen.isQLNhanVien()) {
+            btnNhanVien.doClick();
+            return;
+        }
+
+        if (phanQuyen.isQLKhachHang()) {
+            btnKhachHang.doClick();
+            return;
+        }
+
+        // ... và tiếp tục với các quyền còn lại (QLKhuyenMai, QLPhanQuyen, QLThongKe)
+
+        if (phanQuyen.isQLKhuyenMai()) {
+            btnKhuyenMai.doClick();
+            return;
+        }
+
+        if (phanQuyen.isQLPhanQuyen()) {
+            btnPhanQuyen.doClick();
+            return;
+        }
+
+        if (phanQuyen.isQLThongKe()) {
+            btnThongKe.doClick();
+            return;
+        }
+
+        // Nếu không có quyền nào (rất hiếm):
+        // JOptionPane.showMessageDialog(this, "Tài khoản không có quyền truy cập chức năng nào.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
+    private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMatKhauActionPerformed
+        // 1. Kiểm tra đối tượng tài khoản hiện tại
+        if (this.taiKhoan == null) {
+            JOptionPane.showMessageDialog(this, "Không có thông tin tài khoản hiện tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 2. Khởi tạo FrmDoiMatKhau Dialog
+        // FrmDoiMatKhau cần constructor: (java.awt.Frame parent, boolean modal, TaiKhoan tk)
+        GUI.FrmDoiMatKhau doiMatKhauDialog = new GUI.FrmDoiMatKhau(this, true, this.taiKhoan);
+
+        // 3. Hiển thị Dialog
+        doiMatKhauDialog.setVisible(true);
+    }//GEN-LAST:event_btnDoiMatKhauActionPerformed
+
+    private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this, 
                 "Bạn có chắc chắn muốn đăng xuất không?",
                 "Xác nhận",
-                JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
+                JOptionPane.YES_NO_OPTION
+        );
+        if (confirm == JOptionPane.YES_OPTION){
             this.dispose();
             new FrmDangNhap().setVisible(true);
         }
-    }// GEN-LAST:event_btnDangXuatActionPerformed
+    }//GEN-LAST:event_btnDangXuatActionPerformed
 
-    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnThongKeActionPerformed
-        // TODO add your handling code here:
-        pnContent.removeAll();
-        // pnContent.add(QLThongKe);
-        pnContent.revalidate();
-        pnContent.repaint();
-    }// GEN-LAST:event_btnThongKeActionPerformed
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
+//        // TODO add your handling code here:
+//        pnContent.removeAll();
+//        pnContent.add(QLThongKe);
+//        pnContent.revalidate();
+//        pnContent.repaint();
+    }//GEN-LAST:event_btnThongKeActionPerformed
 
-    private void btnKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnKhuyenMaiActionPerformed
+    private void btnKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhuyenMaiActionPerformed
         pnContent.removeAll();
         pnContent.add(QLKhuyenMai);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnKhuyenMaiActionPerformed
+    }//GEN-LAST:event_btnKhuyenMaiActionPerformed
 
-    private void btnPhanQuyenActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPhanQuyenActionPerformed
+    private void btnPhanQuyenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhanQuyenActionPerformed
         pnContent.removeAll();
         pnContent.add(QLPhanQuyen);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnPhanQuyenActionPerformed
+    }//GEN-LAST:event_btnPhanQuyenActionPerformed
 
-    private void btnNhapHangActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNhapHangActionPerformed
+    private void btnNhapHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhapHangActionPerformed
         pnContent.removeAll();
         pnContent.add(QLNhapHang);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnNhapHangActionPerformed
+    }//GEN-LAST:event_btnNhapHangActionPerformed
 
-    private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnNhanVienActionPerformed
+    private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
         pnContent.removeAll();
         pnContent.add(QLNhanVien);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnNhanVienActionPerformed
+    }//GEN-LAST:event_btnNhanVienActionPerformed
 
-    private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnKhachHangActionPerformed
+    private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
         pnContent.removeAll();
         pnContent.add(QLKhachHang);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnKhachHangActionPerformed
+    }//GEN-LAST:event_btnKhachHangActionPerformed
 
-    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSanPhamActionPerformed
+    private void btnSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSanPhamActionPerformed
         pnContent.removeAll();
         pnContent.add(QLSanPham);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnSanPhamActionPerformed
+    }//GEN-LAST:event_btnSanPhamActionPerformed
 
-    private void btnBanHangActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnBanHangActionPerformed
+    private void btnBanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanHangActionPerformed
         pnContent.removeAll();
         pnContent.add(QLBanHang);
         pnContent.revalidate();
         pnContent.repaint();
-    }// GEN-LAST:event_btnBanHangActionPerformed
+    }//GEN-LAST:event_btnBanHangActionPerformed
 
-    private void txtaccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtaccountActionPerformed
-
-    }// GEN-LAST:event_txtaccountActionPerformed
+    private void txtaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtaccountActionPerformed
+        
+    }//GEN-LAST:event_txtaccountActionPerformed
 
     JPanel QLBanHang = new PnBanHang();
     JPanel QLSanPham = new PnSanPham();
     JPanel QLKhachHang = new PnKhachHang();
     JPanel QLKhuyenMai = new PnKhuyenMai();
     JPanel QLNhanVien = new PnNhanVien();
-    // JPanel QLNhapHang = new PnPhieuNhap();
+    JPanel QLNhapHang = new PnPhieuNhap();
     JPanel QLPhanQuyen = new PnPhanQuyen();
-    // JPanel QLThongKe = new PnThongKe();
-
+//    JPanel QLThongKe = new PnThongKe();
+    
     public static void main(String[] args) {
-        // Khởi chạy MainFrame mà không cần đăng nhập
-        TaiKhoan tk = new TaiKhoan(1, "admin", "123", "Quản trị viên", 1);
-        MainFrame main = new MainFrame(tk);
-        main.setVisible(true);
+    // Khởi chạy MainFrame mà không cần đăng nhập
+    TaiKhoan tk = new TaiKhoan(1, "admin", "123", "Quản trị viên", 1);
+    BUS.PhanQuyenBUS pqBUS = new BUS.PhanQuyenBUS();
+    DTO.PhanQuyen pq = pqBUS.getPhanQuyen(tk.getQuyen());
+    if (pq == null){
+        JOptionPane.showConfirmDialog(null, "Không tìm thấy quyền 'admin' trong csdl", "Lỗi khởi tạo", JOptionPane.ERROR_MESSAGE);
+        return;
     }
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            MainFrame main = new MainFrame(tk,pq);
+            main.setVisible(true);
+        }
+    });
+    
+}
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBanHang;
     private javax.swing.JButton btnDangXuat;

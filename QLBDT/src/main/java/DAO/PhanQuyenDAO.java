@@ -7,114 +7,107 @@ import DTO.PhanQuyen;
 import java.sql.*;
 import java.util.ArrayList;
 public class PhanQuyenDAO {
-    public ArrayList<PhanQuyen> getAll(){
-        ArrayList<PhanQuyen> list = new ArrayList<>();
-        String sql = "SELECT * FROM PhanQuyen";
-        try (ResultSet rs = DataProvider.executeQuery(sql)){
-            while (rs.next()) {
-                list.add(new PhanQuyen(
-                    
-                    rs.getString("Quyen"),
-                    rs.getBoolean("QLNV"),
-                    rs.getBoolean("QLSP"),
-                    rs.getBoolean("QLKH"),
-                    rs.getBoolean("QLHD"),
-                    rs.getBoolean("QLPN"),
-                    rs.getBoolean("QLThongKe")
-                ));
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-    public boolean[] getQuyen(String Quyen) {
-        boolean[] dsQuyen = new boolean[7]; // tương ứng 7 checkbox
+
+    public PhanQuyen getPhanQuyen(String quyen) {
+        PhanQuyen pq = null;
         String sql = "SELECT * FROM PhanQuyen WHERE Quyen = ?";
-        try {
-            ResultSet rs = DataProvider.executeQuery(sql, Quyen);
+        try (ResultSet rs = DataProvider.executeQuery(sql, quyen)) {
+
             if (rs.next()) {
-                dsQuyen[0] = rs.getBoolean("QLKhuyenMai");
-                dsQuyen[1] = rs.getBoolean("QLNhanVien");
-                dsQuyen[2] = rs.getBoolean("QLNhapHang");
-                dsQuyen[3] = rs.getBoolean("QLBanHang");
-                dsQuyen[4] = rs.getBoolean("QLThongKe");
-                dsQuyen[5] = rs.getBoolean("QLSanPham");
-                dsQuyen[6] = rs.getBoolean("QLKhachHang");
+                pq = new PhanQuyen();
+                pq.setQLNhapHang(rs.getBoolean("QLNhapHang"));
+                pq.setQLSanPham(rs.getBoolean("QLSanPham"));
+                pq.setQLNhanVien(rs.getBoolean("QLNhanVien"));
+                pq.setQLKhachHang(rs.getBoolean("QLKhachHang"));
+                pq.setQLThongKe(rs.getBoolean("QLThongKe"));
+                pq.setQLKhuyenMai(rs.getBoolean("QLKhuyenMai"));
+                pq.setQLPhanQuyen(rs.getBoolean("QLPhanQuyen"));
+                pq.setQLBanHang(rs.getBoolean("QLBanHang"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return dsQuyen;
+        return pq;
     }
+
      public ResultSet getDanhSachQuyen() {
         String sql = "SELECT Quyen FROM PhanQuyen";
         return DataProvider.executeQuery(sql);
     }
     
      // Thêm mới hoặc cập nhật quyền
-    public boolean insertOrUpdateQuyen(String Quyen, boolean qlBanHang, boolean qlNhapHang,
-                                       boolean qlNhanVien, boolean qlSanPham, boolean qlKhachHang,boolean qlKhuyenMai, boolean qlThongKe) {
-        try {
-            // Nếu quyền đã tồn tại thì cập nhật, ngược lại thì thêm mới
-            String checkSql = "SELECT COUNT(*) FROM PhanQuyen WHERE Quyen = ?";
-            ResultSet rs = DataProvider.executeQuery(checkSql, Quyen);
-            int count = 0;
-            if (rs.next()) count = rs.getInt(1);
+    public boolean insertQuyen(DTO.PhanQuyen pq) {
+        
+            // 1. Kiểm tra Quyền đã tồn tại chưa
+        if (getPhanQuyen(pq.getQuyen()) != null) {
+            // Quyền đã tồn tại (Ví dụ: tên "admin" đã có)
+            return false; 
+        }
 
-            String sql;
-            if (count > 0) {
-                sql = "UPDATE PhanQuyen SET QLBanHang=?, QLNhapHang=?, QLNhanVien=?, QLSanPham=?, QLKhachHang=?, QLThongKe=? WHERE Quyen=?";
-                return DataProvider.executeUpdate(sql, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlThongKe, Quyen) > 0;
-            } else {
-                sql = "INSERT INTO PhanQuyen (Quyen, QLBanHang, QLNhapHang, QLNhanVien, QLSanPham, QLKhachHang, QLThongKe) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                return DataProvider.executeUpdate(sql, Quyen, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlThongKe) > 0;
-            }
+        // Câu lệnh INSERT INTO (Bao gồm 8 cột quyền + 1 cột Quyen)
+        String sql = "INSERT INTO PhanQuyen (Quyen, QLBanHang, QLNhapHang, QLNhanVien, QLSanPham, QLKhachHang, QLKhuyenMai, QLPhanQuyen, QLThongKe) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            // Thực hiện INSERT
+            int rows = DataProvider.executeUpdate(sql,
+                pq.getQuyen(),            // Tham số 1: Tên Quyen
+                pq.isQLBanHang(),         // Tham số 2
+                pq.isQLSanPham(),        // Tham số 3
+                pq.isQLKhachHang(),        // Tham số 4
+                pq.isQLNhanVien(),         // Tham số 5
+                pq.isQLNhapHang(),       // Tham số 6
+                pq.isQLKhuyenMai(),       // Tham số 7
+                pq.isQLPhanQuyen(),       // Tham số 8
+                pq.isQLThongKe()          // Tham số 9
+            );
+            return rows > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
     
-    public boolean updateQuyen(String Quyen, boolean qlBanHang, boolean qlNhapHang,
-                           boolean qlNhanVien, boolean qlSanPham, boolean qlKhachHang, boolean qlThongKe) {
+    public boolean updateQuyen(String Quyen, boolean qlBanHang,boolean qlSanPham, boolean qlKhachHang, boolean qlNhanVien,
+                                        boolean qlNhapHang, boolean qlKhuyenMai, boolean qlPhanQuyen, boolean qlThongKe) {
         try {
-            String sql = "UPDATE PhanQuyen SET QLBanHang=?, QLNhapHang=?, QLNhanVien=?, QLSanPham=?, QLKhachHang=?, QLThongKe=? WHERE Quyen=?";
-            return DataProvider.executeUpdate(sql, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlThongKe, Quyen) > 0;
+            String sql = "UPDATE PhanQuyen SET QLBanHang=?, QLNhapHang=?, QLNhanVien=?, QLSanPham=?, QLKhachHang=?, QlKhuyenMai=?, QLPhanQuyen=?, QLThongKe=? WHERE Quyen=?";
+            return DataProvider.executeUpdate(sql, qlBanHang, qlNhapHang, qlNhanVien, qlSanPham, qlKhachHang, qlKhuyenMai, qlPhanQuyen, qlThongKe, Quyen) > 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
     public boolean deleteQuyen(String Quyen) {
+        String sql = "UPDATE PhanQuyen SET QLBanHang=0, QLNhapHang=0, QLNhanVien=0, QLSanPham=0, QLKhachHang=0, QlKhuyenMai=0, QLPhanQuyen=0, QLThongKe=0 WHERE Quyen=?";
         try {
-            String sql = "DELETE FROM PhanQuyen WHERE Quyen = ?";
-            return DataProvider.executeUpdate(sql, Quyen) > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    // Cập nhật quyền
-    public boolean update(PhanQuyen pq) {
-        String sql = "UPDATE INTO PhanQuyen SET QLNhanVien=?, QLSanPham=?, QLKhachHang=?, QLBanHang=?, QLNhapHang=?, QLThongKe=?) WHERE QUYEN=?";
-        try {
-            int rows = DataProvider.executeUpdate(sql,
-              
-                pq.isQLNhanVien(),
-                pq.isQLSanPham(),
-                pq.isQLKhachHang(),
-                pq.isQLBanHang(),
-                pq.isQLNhapHang(),
-                pq.isQLThongKe()     
-            );
+            int rows = DataProvider.executeUpdate(sql, Quyen);
             return rows >0;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
+
+
+//    // Thêm quyền
+//    public boolean insertQuyen(PhanQuyen pq) {
+//        String sql = "INSERT PhanQuyen SET QLNhanVien=?, QLSanPham=?, QLKhachHang=?, QLBanHang=?, QLNhapHang=?, QLThongKe=?) WHERE QUYEN=?";
+//        try {
+//            int rows = DataProvider.executeUpdate(sql,
+//              
+//                pq.isQLNhanVien(),
+//                pq.isQLSanPham(),
+//                pq.isQLKhachHang(),
+//                pq.isQLBanHang(),
+//                pq.isQLNhapHang(),
+//                pq.isQLThongKe()     
+//            );
+//            return rows >0;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+    
     
 }

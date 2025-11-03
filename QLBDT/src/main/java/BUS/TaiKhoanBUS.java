@@ -8,7 +8,7 @@ import DAO.TaiKhoanDAO;
 import DTO.TaiKhoan;
 
 public class TaiKhoanBUS {
-    private TaiKhoanDAO dao = new TaiKhoanDAO();
+    private TaiKhoanDAO tkDAO = new TaiKhoanDAO();
     
     //Xử lý đăng nhập
     public TaiKhoan dangNhap(String user, String pass) {
@@ -21,7 +21,7 @@ public class TaiKhoanBUS {
             return null;
         }
 
-        TaiKhoan tk = dao.login(user, pass);
+        TaiKhoan tk = tkDAO.login(user, pass);
         if (tk == null) {
             System.out.println("Sai tài khoản hoặc mật khẩu!");
         }
@@ -43,7 +43,7 @@ public class TaiKhoanBUS {
         }
         
         // Kiểm tra tài khoản tồn tại và mật khẩu cũ đúng
-        TaiKhoan tk = dao.getTaiKhoanByUsername(user);
+        TaiKhoan tk = tkDAO.getTaiKhoanByUsername(user);
         if (tk == null) {
             System.out.println("❌ Tài khoản không tồn tại!");
             return false;
@@ -52,7 +52,7 @@ public class TaiKhoanBUS {
             System.out.println("❌ Mật khẩu cũ không đúng!");
             return false;
         }
-        return dao.doiMatKhau(user, newPass);
+        return tkDAO.doiMatKhau(user, newPass);
     }
 
     public boolean login(String taiKhoan, String matKhau) {
