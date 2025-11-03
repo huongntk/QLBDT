@@ -178,6 +178,10 @@ public class FrmDangNhap extends javax.swing.JFrame {
 
             MainFrame main = new MainFrame(tk, pq);
             main.setVisible(true);
+
+            Auth.maNV = tk.getMaNV();
+            Auth.quyen = tk.getQuyen();
+            
             this.dispose(); // Đóng cửa sổ đăng nhập
         }
     }//GEN-LAST:event_btnLoginActionPerformed
