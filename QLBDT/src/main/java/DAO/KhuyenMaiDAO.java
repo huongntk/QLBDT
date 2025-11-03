@@ -90,86 +90,45 @@ public class KhuyenMaiDAO {
         
         return rows > 0;
     }
-public ArrayList<KhuyenMai> timKiemKhuyenMai(String tuKhoa) {
-    ArrayList<KhuyenMai> danhSach = new ArrayList<>();
+    public ArrayList<KhuyenMai> timKiemKhuyenMai(String tuKhoa) {
+        ArrayList<KhuyenMai> danhSach = new ArrayList<>();
     
-    // SQL chuẩn: CAST các cột số sang VARCHAR để LIKE
-    String sql = "SELECT * FROM GiamGia " +
-                 "WHERE CAST(MaGG AS VARCHAR) LIKE ? " +
-                 "OR TenGG LIKE ? " +
-                 "OR CAST(DieuKien AS VARCHAR) LIKE ?";
+        // SQL chuẩn: CAST các cột số sang VARCHAR để LIKE
+        String sql = "SELECT * FROM GiamGia " +
+                     "WHERE CAST(MaGG AS VARCHAR) LIKE ? " +
+                     "OR TenGG LIKE ? " +
+                     "OR CAST(DieuKien AS VARCHAR) LIKE ?";
     
-    String keyword = "%" + tuKhoa + "%";
-
-    try (Connection conn = DBConnect.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String keyword = "%" + tuKhoa + "%";
         
-        // Truyền tham số
-        stmt.setString(1, keyword);
-        stmt.setString(2, keyword);
-        stmt.setString(3, keyword);
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+            // Truyền tham số
+            stmt.setString(1, keyword);
+            stmt.setString(2, keyword);
+            stmt.setString(3, keyword);
 
-        ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                KhuyenMai km = new KhuyenMai(
+                    rs.getInt("MaGG"),
+                    rs.getString("TenGG"),
+                    rs.getInt("PhanTramGiam"),
+                    rs.getInt("DieuKien"),
+                    rs.getDate("NgayBD"),
+                    rs.getDate("NgayKT"),
+                    rs.getBoolean("TinhTrang")
+                );
+                danhSach.add(km);
+            }   
 
-        while (rs.next()) {
-            KhuyenMai km = new KhuyenMai(
-                rs.getInt("MaGG"),
-                rs.getString("TenGG"),
-                rs.getInt("PhanTramGiam"),
-                rs.getInt("DieuKien"),
-                rs.getDate("NgayBD"),
-                rs.getDate("NgayKT"),
-                rs.getBoolean("TinhTrang")
-            );
-            danhSach.add(km);
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        rs.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return danhSach;
     }
-
-    return danhSach;
-}
-
-//    public ArrayList<KhuyenMai> timKiemKhuyenMai(String tuKhoa) {
-//        ArrayList<KhuyenMai> danhSach = new ArrayList<>();
-//        
-//        String sql = "SELECT * FROM GiamGia WHERE CAST(MaGG AS VARCHAR) LIKE ? OR TenGG LIKE OR CAST(DieuKien AS VARCHAR) LIKE ? AND TinhTrang = 1";
-//        String keyword = "%" + tuKhoa + "%";
-//        ResultSet rs = null;
-//
-//        try {
-//            rs = DataProvider.executeQuery(sql, keyword, keyword, keyword);
-//
-//            while (rs != null && rs.next()) {
-//                KhuyenMai km = new KhuyenMai(
-//                        rs.getInt("MaGG"),
-//                        rs.getString("TenGG"),
-//                        rs.getInt("PhanTramGiam"),
-//                        rs.getInt("DieuKien"),
-//                        rs.getDate("NgayBD"),
-//                        rs.getDate("NgayKT"),
-//                        rs.getBoolean("TinhTrang")
-//                );
-//                danhSach.add(km);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            
-//            if (rs != null) {
-//                try {
-//                    Statement stmt = rs.getStatement();
-//                    Connection conn = stmt.getConnection();
-//                    rs.close();
-//                    stmt.close();
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return danhSach;
-//    }
 }
