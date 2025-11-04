@@ -141,4 +141,6 @@ public class Product {
     public void setTrangThai(Boolean TrangThai) {
         this.TrangThai = TrangThai;
     }
+    @Override
+    public String toString() { return TenSP; } // để combobox hiện tên
 }

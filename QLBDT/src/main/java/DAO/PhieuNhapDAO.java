@@ -145,4 +145,29 @@ public class PhieuNhapDAO {
         return list;
     }
 
+    // Đánh dấu đã nhập (nếu cột DaNhap tồn tại)
+public boolean markFinalized(int maPN) {
+    String sql = "UPDATE PhieuNhap SET DaNhap = 1 WHERE MaPN = ?";
+    try {
+        return DataProvider.executeUpdate(sql, maPN) > 0;
+    } catch (Exception ex) {
+        // nếu DB chưa có cột DaNhap -> bỏ qua, không lỗi
+        return false;
+    }
+}
+
+// Kiểm tra đã nhập
+public boolean isFinalized(int maPN) {
+    String sql = "SELECT DaNhap FROM PhieuNhap WHERE MaPN = ?";
+    try (ResultSet rs = DataProvider.executeQuery(sql, maPN)) {
+        if (rs != null && rs.next()) {
+            return rs.getBoolean(1);
+        }
+    } catch (Exception ex) {
+        // nếu không có cột -> coi như chưa khóa
+    }
+    return false;
+}
+
+
 }

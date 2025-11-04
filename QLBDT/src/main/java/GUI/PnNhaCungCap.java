@@ -7,24 +7,22 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.List;
 
-public class PnNhaCungCap extends JFrame {
+public class PnNhaCungCap extends JPanel {
 
     private JTextField txtMa, txtTen, txtDiaChi, txtSDT;
     private JCheckBox chkHoatDong;
     private JTable table;
     private DefaultTableModel model;
-    private NhaCungCapBUS bus = new NhaCungCapBUS();
+    private final NhaCungCapBUS bus = new NhaCungCapBUS();
 
     public PnNhaCungCap() {
-        setTitle("Quản lý Nhà Cung Cấp");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 650);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
+        setBackground(Color.WHITE);
 
         Font lblFont = new Font("Segoe UI", Font.PLAIN, 14);
 
@@ -60,22 +58,21 @@ public class PnNhaCungCap extends JFrame {
 
         int row = 0;
         g.gridx = 0; g.gridy = row; leftPanel.add(lblMa, g);
-        g.gridx = 1; leftPanel.add(txtMa, g);
-        row++;
+        g.gridx = 1; leftPanel.add(txtMa, g); row++;
+
         g.gridx = 0; g.gridy = row; leftPanel.add(lblTen, g);
-        g.gridx = 1; leftPanel.add(txtTen, g);
-        row++;
+        g.gridx = 1; leftPanel.add(txtTen, g); row++;
+
         g.gridx = 0; g.gridy = row; leftPanel.add(lblDiaChi, g);
-        g.gridx = 1; leftPanel.add(txtDiaChi, g);
-        row++;
+        g.gridx = 1; leftPanel.add(txtDiaChi, g); row++;
+
         g.gridx = 0; g.gridy = row; leftPanel.add(lblSDT, g);
-        g.gridx = 1; leftPanel.add(txtSDT, g);
-        row++;
+        g.gridx = 1; leftPanel.add(txtSDT, g); row++;
+
         g.gridx = 0; g.gridy = row; leftPanel.add(lblTrangThai, g);
-        g.gridx = 1; leftPanel.add(chkHoatDong, g);
+        g.gridx = 1; leftPanel.add(chkHoatDong, g); row++;
 
         // Nút thêm
-        row++;
         g.gridx = 0; g.gridy = row; g.gridwidth = 2;
         JPanel pnlAddHolder = new JPanel();
         pnlAddHolder.setOpaque(false);
@@ -92,7 +89,9 @@ public class PnNhaCungCap extends JFrame {
                 new Font("Segoe UI", Font.BOLD, 14)));
 
         String[] cols = {"Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Trạng thái"};
-        model = new DefaultTableModel(cols, 0);
+        model = new DefaultTableModel(cols, 0) {
+            @Override public boolean isCellEditable(int row, int column) { return false; }
+        };
         table = new JTable(model);
         table.setRowHeight(26);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -118,7 +117,7 @@ public class PnNhaCungCap extends JFrame {
         // ====== SỰ KIỆN ======
         loadData();
 
-        // Khi click chọn dòng → hiển thị sang form
+        // Click chọn dòng
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int r = table.getSelectedRow();
@@ -127,7 +126,7 @@ public class PnNhaCungCap extends JFrame {
                     txtTen.setText(model.getValueAt(r, 1).toString());
                     txtDiaChi.setText(model.getValueAt(r, 2).toString());
                     txtSDT.setText(model.getValueAt(r, 3).toString());
-                    chkHoatDong.setSelected(model.getValueAt(r, 4).toString().equals("Hoạt động"));
+                    chkHoatDong.setSelected("Hoạt động".equals(model.getValueAt(r, 4).toString()));
                 }
             }
         });
@@ -255,9 +254,5 @@ public class PnNhaCungCap extends JFrame {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PnNhaCungCap().setVisible(true));
     }
 }

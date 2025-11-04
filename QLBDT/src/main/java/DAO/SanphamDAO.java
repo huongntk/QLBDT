@@ -12,7 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import java.sql.*;
+import java.util.*;
 /**
  *
  * @author ltd96
@@ -191,5 +192,35 @@ public class SanphamDAO {
 
         return listTmp;
     }
+
+
+    // Lấy 1 sản phẩm theo ID dựa trên getById(int) đã có
+public Product getOneById(int id) {
+    ArrayList<Product> list = getById(id);
+    return (list == null || list.isEmpty()) ? null : list.get(0);
+}
+
+// Lấy tất cả sản phẩm đang hoạt động của 1 nhà cung cấp
+public List<Product> getByNccActive(int maNCC) {
+    List<Product> list = new ArrayList<>();
+    String sql =
+        "SELECT ID, TenSP, maNCC " +
+        "FROM SanPham " +
+        "WHERE maNCC = ? AND TrangThai = 1 " +
+        "ORDER BY TenSP";
+
+    try (ResultSet rs = DataProvider.executeQuery(sql, maNCC)) {
+        while (rs != null && rs.next()) {
+            Product p = new Product();
+            p.setID(rs.getInt("ID"));          // ✅ đúng cú pháp
+            p.setTenSP(rs.getString("TenSP"));  // ✅ đúng cú pháp
+            p.setMaNCC(rs.getInt("maNCC"));     // ✅ đúng cú pháp
+            list.add(p);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return list;
+}
 
 }

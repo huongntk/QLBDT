@@ -1,9 +1,11 @@
 package GUI;
 
 import BUS.PhieuNhapBUS;
+import BUS.CTPhieuNhapBUS;
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
 import DTO.PhieuNhapDTO;
+import DTO.CTPhieuNhapDTO;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,36 +13,35 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-public class PnPhieuNhap extends JFrame {
-    private PhieuNhapBUS bus = new PhieuNhapBUS();
-    private NhaCungCapDAO nccDao = new NhaCungCapDAO();
+public class PnPhieuNhap extends JPanel {
+
+    private final PhieuNhapBUS bus = new PhieuNhapBUS();
+    private final CTPhieuNhapBUS ctBus = new CTPhieuNhapBUS();
+    private final NhaCungCapDAO nccDao = new NhaCungCapDAO();
 
     private DefaultTableModel model;
     private JTable table;
     private JTextField txtSearch;
 
-    // cache MaNCC -> TenNCC để hiển thị
-    private Map<Integer, String> nccMap = new HashMap<>();
+    // cache MaNCC -> TenNCC
+    private final Map<Integer, String> nccMap = new HashMap<>();
 
-    // formatter định dạng tiền
+    // formatter tiền tệ
     private final DecimalFormat moneyFormat = new DecimalFormat("#,###");
 
     public PnPhieuNhap() {
-        setTitle("Quản lý Phiếu Nhập");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 650);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
+        setBackground(Color.WHITE);
 
-        Font lblFont = new Font("Segoe UI", Font.PLAIN, 14);
-
-        // ====== PANEL TÌM KIẾM ======
+        /* ====== PANEL TÌM KIẾM ====== */
         JPanel pnlSearch = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
         pnlSearch.setBackground(Color.WHITE);
         pnlSearch.setBorder(BorderFactory.createTitledBorder(
@@ -52,54 +53,59 @@ public class PnPhieuNhap extends JFrame {
         pnlSearch.add(lblSearch);
         pnlSearch.add(txtSearch);
         pnlSearch.add(btnSearch);
-
         add(pnlSearch, BorderLayout.NORTH);
 
-        // ====== DANH SÁCH PHIẾU NHẬP ======
+        /* ====== DANH SÁCH PHIẾU NHẬP ====== */
         JPanel pnlTable = new JPanel(new BorderLayout());
         pnlTable.setBackground(Color.WHITE);
         pnlTable.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "DANH SÁCH PHIẾU NHẬP",
                 TitledBorder.LEFT, TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 14)));
 
-        // thay "Mã NCC" -> "Nhà cung cấp"
-        // giữ cột MaPN_DB ẩn như cũ
+        // giữ cột MaPN_DB ẩn
         String[] cols = {"Mã PN", "MaPN_DB", "Nhà cung cấp", "Ngày lập", "Tổng tiền"};
-        model = new DefaultTableModel(cols, 0);
+        model = new DefaultTableModel(cols, 0) {
+            @Override public boolean isCellEditable(int r, int c) { return false; }
+        };
         table = new JTable(model);
         table.setRowHeight(26);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
-
         // ẩn MaPN_DB
         table.getColumnModel().getColumn(1).setMinWidth(0);
         table.getColumnModel().getColumn(1).setMaxWidth(0);
 
         pnlTable.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // ====== CÁC NÚT HÀNH ĐỘNG ======
-        JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 8));
+        /* ====== NÚT HÀNH ĐỘNG ====== */
+        JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 16, 8));
         JButton btnThem = createClassicButton("Thêm", "/icon/them.png");
         JButton btnSua = createClassicButton("Sửa", "/icon/sua.png");
         JButton btnXoa = createClassicButton("Xóa", "/icon/xoa.png");
         JButton btnChiTiet = createClassicButton("Chi tiết", "/icon/detail.png");
+        JButton btnXuat = createClassicButton("Xuất", "/icon/export.png"); // <— NEW
         JButton btnLamMoi = createClassicButton("Làm mới", "/icon/undo.png");
         pnlButtons.add(btnThem);
         pnlButtons.add(btnSua);
         pnlButtons.add(btnXoa);
         pnlButtons.add(btnChiTiet);
+        pnlButtons.add(btnXuat);     // <— NEW
         pnlButtons.add(btnLamMoi);
         pnlTable.add(pnlButtons, BorderLayout.SOUTH);
 
         add(pnlTable, BorderLayout.CENTER);
 
-        // ====== SỰ KIỆN ======
+        /* ====== SỰ KIỆN ====== */
         btnThem.addActionListener(e -> showAddDialog());
         btnSua.addActionListener(e -> showEditDialog());
         btnXoa.addActionListener(e -> deleteSelected());
-        btnLamMoi.addActionListener(e -> loadData());
+        btnLamMoi.addActionListener(e -> {
+            buildNccCache();
+            loadData();
+        });
         btnSearch.addActionListener(e -> search());
         btnChiTiet.addActionListener(e -> openDetail());
+        btnXuat.addActionListener(e -> exportSelected()); // <— NEW
 
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -107,72 +113,59 @@ public class PnPhieuNhap extends JFrame {
             }
         });
 
-        // load NCC map 1 lần
+        // load cache NCC + bảng
         buildNccCache();
-
-        // load bảng
         loadData();
     }
 
-    // ====== build cache MaNCC -> TenNCC ======
+    /* ================== NCC cache ================== */
     private void buildNccCache() {
-    nccMap.clear();
-    List<NhaCungCapDTO> ds = nccDao.getAll();
-    for (NhaCungCapDTO n : ds) {
-        if (n != null) {
-            // vì getMaNCC() trong code của bạn là int chứ không phải Integer
-            // nên ta lấy ra và đưa vào map luôn
-            int id = n.getMaNCC();        // <-- kiểu int
-            String ten = n.getTenNCC();   // có thể null nhưng không sao
-
-            nccMap.put(id, ten != null ? ten : ("NCC #" + id));
+        nccMap.clear();
+        List<NhaCungCapDTO> ds = nccDao.getAll();
+        if (ds == null) return;
+        for (NhaCungCapDTO n : ds) {
+            if (n == null) continue;
+            int id = n.getMaNCC();
+            String ten = n.getTenNCC();
+            nccMap.put(id, (ten == null || ten.isEmpty()) ? ("NCC #" + id) : ten);
         }
     }
-}
 
-
-    // ====== LOAD DỮ LIỆU ======
+    /* ================== LOAD BẢNG ================== */
     private void loadData() {
         model.setRowCount(0);
-
         List<PhieuNhapDTO> list = bus.getAll();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
         for (PhieuNhapDTO pn : list) {
             String displayMaPN = bus.toDisplayCode(pn.getMaPN());
-
-            // lấy tên NCC từ cache
             String tenNCC = "";
             if (pn.getMaNCC() != null) {
                 tenNCC = nccMap.getOrDefault(pn.getMaNCC(), String.valueOf(pn.getMaNCC()));
             }
-
-            // định dạng tiền
             String formattedMoney = moneyFormat.format(pn.getTongTien()) + " VNĐ";
 
             model.addRow(new Object[]{
-                    displayMaPN,                    // Mã PN hiển thị (100000 + MaPN)
-                    pn.getMaPN(),                   // MaPN_DB (ẩn)
-                    tenNCC,                         // tên NCC thay cho mã NCC
+                    displayMaPN,
+                    pn.getMaPN(),
+                    tenNCC,
                     pn.getNgayLap() == null ? "" : df.format(pn.getNgayLap()),
-                    formattedMoney                  // Tổng tiền add dấu phẩy + đơn vị
+                    formattedMoney
             });
         }
     }
 
-    // ====== CÁC CHỨC NĂNG ======
+    /* ================== CHỨC NĂNG ================== */
     private void showAddDialog() {
         try {
-            JPanel p = new JPanel(new GridLayout(4,2,8,8));
+            JPanel p = new JPanel(new GridLayout(4, 2, 8, 8));
             String estimate = bus.nextDisplayEstimate();
             JTextField txtMaPN = new JTextField(estimate);
             txtMaPN.setEditable(false);
 
             // CHỈ NCC HOẠT ĐỘNG
-        JComboBox<NhaCungCapDTO> cbo = new JComboBox<>();
-        for (NhaCungCapDTO n : nccDao.getActive()) {
-            cbo.addItem(n);
-        }
+            JComboBox<NhaCungCapDTO> cbo = new JComboBox<>();
+            List<NhaCungCapDTO> active = nccDao.getActive();
+            if (active != null) for (NhaCungCapDTO n : active) cbo.addItem(n);
 
             JTextField txtNgay = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()));
             txtNgay.setEditable(false);
@@ -185,27 +178,25 @@ public class PnPhieuNhap extends JFrame {
             p.add(new JLabel("Ngày lập:")); p.add(txtNgay);
             p.add(new JLabel("Tổng tiền:")); p.add(txtTong);
 
-            int opt = JOptionPane.showConfirmDialog(this, p, "Thêm phiếu nhập", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int opt = JOptionPane.showConfirmDialog(this, p, "Thêm phiếu nhập",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (opt == JOptionPane.OK_OPTION) {
                 NhaCungCapDTO sel = (NhaCungCapDTO) cbo.getSelectedItem();
-                if (sel == null) { 
-                    JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp."); 
-                    return; 
+                if (sel == null) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp.");
+                    return;
                 }
 
-                // tạo phiếu nhập mặc định TongTien=0
+                // tạo PN mặc định (TongTien=0)
                 PhieuNhapDTO pn = bus.createDefault(sel.getMaNCC());
                 int newId = bus.add(pn);
                 if (newId > 0) {
-
-                    // mở form chi tiết phiếu nhập
-                    PnCTPhieuNhap detailDlg = new PnCTPhieuNhap(this, newId);
-                    detailDlg.setVisible(true);
-
-                    // reload lại cache NCC phòng trường hợp NCC mới vừa tạo (hiếm)
-                    buildNccCache();
-                    loadData();
-
+                    // mở form chi tiết phiếu nhập (modal)
+                    Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+                    PnCTPhieuNhap.showDialog(owner, newId, () -> {
+                        buildNccCache();
+                        loadData();
+                    });
                 } else {
                     JOptionPane.showMessageDialog(this, "Thêm thất bại!");
                 }
@@ -218,60 +209,52 @@ public class PnPhieuNhap extends JFrame {
 
     private void showEditDialog() {
         int r = table.getSelectedRow();
-        if (r < 0) { 
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 phiếu để sửa."); 
-            return; 
+        if (r < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 phiếu để sửa.");
+            return;
         }
         int maPN = (int) model.getValueAt(r, 1);
 
         try {
             String ngayStr = (String) model.getValueAt(r, 3);
-            String tongStrDisplay = (String) model.getValueAt(r, 4); // dạng "20,000,000 VNĐ"
-            String tongStrRaw = tongStrDisplay.replace("VNĐ","").replace("VND","").replace(",","").trim();
+            String tongStrDisplay = (String) model.getValueAt(r, 4); // "20,000 VNĐ"
+            String tongStrRaw = tongStrDisplay.replace("VNĐ", "").replace("VND", "")
+                    .replace(",", "").trim();
             Double tongDouble = Double.parseDouble(tongStrRaw);
 
-            // hiện tại cột 2 trong bảng model là "Nhà cung cấp" (tên),
-            // ta cần maNCC thực tế -> lấy từ DAO thay vì từ bảng
             PhieuNhapDTO current = bus.getById(maPN);
             Integer curMaNCC = (current != null) ? current.getMaNCC() : null;
 
-            JPanel p = new JPanel(new GridLayout(3,2,8,8));
+            JPanel p = new JPanel(new GridLayout(3, 2, 8, 8));
 
             JComboBox<NhaCungCapDTO> cbo = new JComboBox<>();
             List<NhaCungCapDTO> allNcc = nccDao.getAll();
-            for (NhaCungCapDTO n : allNcc) {
-                cbo.addItem(n);
+            if (allNcc != null) for (NhaCungCapDTO n : allNcc) cbo.addItem(n);
+            // set selected
+            if (curMaNCC != null) {
+                for (int i = 0; i < cbo.getItemCount(); i++) {
+                    NhaCungCapDTO item = cbo.getItemAt(i);
+                    if (item != null && item.getMaNCC() == curMaNCC.intValue()) {
+                        cbo.setSelectedIndex(i);
+                        break;
+                    }
+                }
             }
-            // select ncc hiện tại
-if (curMaNCC != null) {
-    for (int i = 0; i < cbo.getItemCount(); i++) {
-        NhaCungCapDTO item = cbo.getItemAt(i);
-        if (item != null) {
-            int idItem = item.getMaNCC(); // int
-            if (idItem == curMaNCC.intValue()) {
-                cbo.setSelectedIndex(i);
-                break;
-            }
-        }
-    }
-}
-
 
             JFormattedTextField txtNgay = new JFormattedTextField(new java.text.SimpleDateFormat("yyyy-MM-dd"));
             txtNgay.setValue(new java.text.SimpleDateFormat("yyyy-MM-dd").parse(ngayStr));
 
-            // tổng tiền edit ở đây thực ra ít khi cho sửa tay,
-            // nhưng bạn có để sửa nên mình vẫn map về raw số
             JTextField txtTong = new JTextField(String.valueOf(tongDouble.intValue()));
 
             p.add(new JLabel("Nhà cung cấp:")); p.add(cbo);
             p.add(new JLabel("Ngày lập:")); p.add(txtNgay);
             p.add(new JLabel("Tổng tiền:")); p.add(txtTong);
 
-            int opt = JOptionPane.showConfirmDialog(this, p, "Sửa phiếu nhập", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int opt = JOptionPane.showConfirmDialog(this, p, "Sửa phiếu nhập",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (opt == JOptionPane.OK_OPTION) {
                 NhaCungCapDTO sel = (NhaCungCapDTO) cbo.getSelectedItem();
-                java.sql.Date ngay = new java.sql.Date(((java.util.Date)txtNgay.getValue()).getTime());
+                java.sql.Date ngay = new java.sql.Date(((java.util.Date) txtNgay.getValue()).getTime());
                 double tong = Double.parseDouble(txtTong.getText().replaceAll(",", "").trim());
 
                 PhieuNhapDTO pn = new PhieuNhapDTO(maPN, sel.getMaNCC(), ngay, tong);
@@ -291,13 +274,13 @@ if (curMaNCC != null) {
 
     private void deleteSelected() {
         int r = table.getSelectedRow();
-        if (r < 0) { 
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 phiếu để xóa."); 
-            return; 
+        if (r < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 phiếu để xóa.");
+            return;
         }
         int maPN = (int) model.getValueAt(r, 1);
-        int opt = JOptionPane.showConfirmDialog(this, 
-                "Bạn có chắc muốn xóa phiếu " + model.getValueAt(r,0) + " ?", 
+        int opt = JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc muốn xóa phiếu " + model.getValueAt(r, 0) + " ?",
                 "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (opt != JOptionPane.YES_OPTION) return;
 
@@ -312,25 +295,23 @@ if (curMaNCC != null) {
     private void search() {
         try {
             String key = txtSearch.getText().trim();
-            List<PhieuNhapDTO> res = bus.search(key);
+            List<PhieuNhapDTO> res = bus.search(key); // cần implement trong DAO/BUS
             model.setRowCount(0);
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             for (PhieuNhapDTO pn : res) {
                 String displayMaPN = bus.toDisplayCode(pn.getMaPN());
-
                 String tenNCC = "";
                 if (pn.getMaNCC() != null) {
                     tenNCC = nccMap.getOrDefault(pn.getMaNCC(), String.valueOf(pn.getMaNCC()));
                 }
-
                 String formattedMoney = moneyFormat.format(pn.getTongTien()) + " VNĐ";
 
                 model.addRow(new Object[]{
                         displayMaPN,
                         pn.getMaPN(),
                         tenNCC,
-                        pn.getNgayLap()==null?"":df.format(pn.getNgayLap()),
+                        pn.getNgayLap() == null ? "" : df.format(pn.getNgayLap()),
                         formattedMoney
                 });
             }
@@ -348,16 +329,93 @@ if (curMaNCC != null) {
         }
         int maPN = (int) model.getValueAt(r, 1);
 
-        // mở chi tiết dạng modal
-        PnCTPhieuNhap detailDlg = new PnCTPhieuNhap(this, maPN);
-        detailDlg.setVisible(true);
-
-        // khi đóng chi tiết -> reload lại
-        buildNccCache();
-        loadData();
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        PnCTPhieuNhap.showDialog(owner, maPN, () -> {
+            buildNccCache();
+            loadData();
+        });
     }
 
-    // ====== HÀM TẠO NÚT PHONG CÁCH CỔ ĐIỂN ======
+    /* ================== XUẤT PHIẾU NHẬP (CSV) ================== */
+    private void exportSelected() {
+        int r = table.getSelectedRow();
+        if (r < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn 1 phiếu để xuất.");
+            return;
+        }
+        int maPN = (int) model.getValueAt(r, 1);
+
+        // Lấy dữ liệu header & chi tiết
+        PhieuNhapDTO pn = bus.getById(maPN);
+        if (pn == null) {
+            JOptionPane.showMessageDialog(this, "Không lấy được dữ liệu phiếu!");
+            return;
+        }
+        List<CTPhieuNhapDTO> chitiet = ctBus.getByMaPN(maPN);
+
+        String tenNCC = "";
+        if (pn.getMaNCC() != null) tenNCC = nccMap.getOrDefault(pn.getMaNCC(), String.valueOf(pn.getMaNCC()));
+        String ngay = pn.getNgayLap() == null ? "" : new SimpleDateFormat("yyyy-MM-dd").format(pn.getNgayLap());
+        String tong = moneyFormat.format(pn.getTongTien()) + " VNĐ";
+
+        // Chọn nơi lưu
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Xuất phiếu nhập (CSV)");
+        fc.setSelectedFile(new java.io.File("PhieuNhap_" + maPN + ".csv"));
+        int res = fc.showSaveDialog(this);
+        if (res != JFileChooser.APPROVE_OPTION) return;
+
+        Path out = fc.getSelectedFile().toPath();
+        // đảm bảo đuôi .csv
+        if (!out.toString().toLowerCase().endsWith(".csv")) {
+            out = out.resolveSibling(out.getFileName() + ".csv");
+        }
+
+        try {
+            StringBuilder sb = new StringBuilder();
+
+            // BOM UTF-8 để Excel nhận Unicode
+            sb.append('\uFEFF');
+
+            // Header thông tin phiếu
+            sb.append("PHIẾU NHẬP").append('\n');
+            sb.append("Mã PN hiển thị,").append(bus.toDisplayCode(maPN)).append('\n');
+            sb.append("MaPN DB,").append(maPN).append('\n');
+            sb.append("Nhà cung cấp,").append(escapeCsv(tenNCC)).append('\n');
+            sb.append("Ngày lập,").append(ngay).append('\n');
+            sb.append("Tổng tiền,").append(tong).append('\n');
+            sb.append('\n');
+
+            // Bảng chi tiết
+            sb.append("Mã PN,ID SP,Số lượng,Giá nhập,Thành tiền").append('\n');
+            double sum = 0;
+            for (CTPhieuNhapDTO ct : chitiet) {
+                sum += ct.getThanhTien();
+                sb.append(ct.getMaPN()).append(',')
+                  .append(ct.getId()).append(',')
+                  .append(ct.getSoLuong()).append(',')
+                  .append(ct.getGiaNhap()).append(',')
+                  .append(ct.getThanhTien()).append('\n');
+            }
+            sb.append(",,,Tổng cộng,").append((long) sum).append('\n');
+
+            Files.write(out, sb.toString().getBytes(StandardCharsets.UTF_8));
+            JOptionPane.showMessageDialog(this, "Đã xuất: " + out.toAbsolutePath());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Xuất thất bại: " + ex.getMessage());
+        }
+    }
+
+    private String escapeCsv(String s) {
+        if (s == null) return "";
+        boolean needQuote = s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r");
+        String v = s.replace("\"", "\"\"");
+        return needQuote ? "\"" + v + "\"" : v;
+    }
+
+    /* ============== Helpers UI ============== */
     private JButton createClassicButton(String text, String iconPath) {
         JButton btn = new JButton(text);
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -382,9 +440,5 @@ if (curMaNCC != null) {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PnPhieuNhap().setVisible(true));
     }
 }

@@ -75,4 +75,8 @@ public class PhieuNhapBUS {
         double tong = tinhTongTienTuCT(maPN);
         return capNhatTongTien(maPN, tong);
     }
+
+    public boolean markFinalized(int maPN) { return dao.markFinalized(maPN); }
+public boolean isFinalized(int maPN) { return dao.isFinalized(maPN); }
+
 }

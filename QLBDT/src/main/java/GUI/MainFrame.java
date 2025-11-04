@@ -442,7 +442,7 @@ public class MainFrame extends javax.swing.JFrame {
     JPanel QLKhachHang = new PnKhachHang();
     JPanel QLKhuyenMai = new PnKhuyenMai();
     JPanel QLNhanVien = new PnNhanVien();
-    JPanel QLNhapHang = new PnPhieuNhap();
+    JPanel QLNhapHang = new PnNhapHang();
     JPanel QLPhanQuyen = new PnPhanQuyen();
 //    JPanel QLThongKe = new PnThongKe();
     
