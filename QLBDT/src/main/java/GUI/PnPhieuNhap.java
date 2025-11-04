@@ -94,7 +94,6 @@ public class PnPhieuNhap extends JPanel {
 
         /* ====== SỰ KIỆN ====== */
         btnThem.addActionListener(e -> showAddDialog());
-        // KHÔNG CÒN showEditDialog GẮN VỚI BTN SỬA
         btnXoa.addActionListener(e -> deleteSelected());
         btnLamMoi.addActionListener(e -> { buildNccCache(); loadData(); });
         btnSearch.addActionListener(e -> search());
@@ -143,8 +142,6 @@ public class PnPhieuNhap extends JPanel {
     }
 
     /* ================== CHỨC NĂNG ================== */
-
-    // THÊM: KHÔNG CÓ Ô TỔNG TIỀN
     private void showAddDialog() {
         try {
             JPanel p = new JPanel(new GridBagLayout());
@@ -202,7 +199,6 @@ public class PnPhieuNhap extends JPanel {
         }
     }
 
-    // SỬA: KHÔNG CÓ Ô TỔNG TIỀN — GIỮ NGUYÊN TỔNG TIỀN HIỆN TẠI
     private void showEditDialog() {
         int r = table.getSelectedRow();
         if (r < 0) { JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 phiếu để sửa."); return; }
