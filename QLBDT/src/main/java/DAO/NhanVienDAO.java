@@ -12,12 +12,11 @@ import java.util.ArrayList;
 
 public class NhanVienDAO {
 
-  
     public ArrayList<NhanVienDTO> layDanhSachNhanVien() {
         ArrayList<NhanVienDTO> danhSach = new ArrayList<>();
         String sql = "SELECT nv.*, tk.TaiKhoan, tk.MatKhau " +
                      "FROM NhanVien nv " +
-                     "JOIN TaiKhoan tk ON nv.MaNV = tk.MaNV";
+                     "LEFT JOIN TaiKhoan tk ON nv.MaNV = tk.MaNV";
         ResultSet rs = null;
 
         try {
@@ -42,7 +41,7 @@ public class NhanVienDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-           
+            
             if (rs != null) {
                 try {
                     Statement stmt = rs.getStatement();
@@ -58,14 +57,13 @@ public class NhanVienDAO {
         return danhSach;
     }
 
- 
     public boolean kiemTraTenTaiKhoan(String tenTaiKhoan, int maNV) {
         String sql = "SELECT COUNT(*) FROM TaiKhoan WHERE TaiKhoan = ? AND MaNV != ?";
         ResultSet rs = null;
         boolean exists = false;
 
         try {
-           
+            
             rs = DataProvider.executeQuery(sql, tenTaiKhoan, maNV);
             
             
@@ -91,7 +89,6 @@ public class NhanVienDAO {
         return exists;
     }
 
- 
     public boolean themNhanVien(NhanVienDTO nv) {
         String sqlNhanVien = "INSERT INTO NhanVien (Ho, Ten, GioiTinh, SoDienThoai, ChucVu, TrangThai) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlTaiKhoan = "INSERT INTO TaiKhoan (MaNV, TaiKhoan, MatKhau, Quyen, TrangThai) VALUES (?, ?, ?, ?, ?)";
@@ -105,7 +102,7 @@ public class NhanVienDAO {
             conn = DBConnect.getConnection();
             conn.setAutoCommit(false); 
 
-           
+            
             psNhanVien = conn.prepareStatement(sqlNhanVien, Statement.RETURN_GENERATED_KEYS);
             psNhanVien.setString(1, nv.getHo());
             psNhanVien.setString(2, nv.getTen());
@@ -158,7 +155,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
-           
+            
             try {
                 if (rsKey != null) rsKey.close();
                 if (psNhanVien != null) psNhanVien.close();
@@ -173,7 +170,6 @@ public class NhanVienDAO {
         }
     }
 
-  
     public boolean suaNhanVien(NhanVienDTO nv) {
         String sqlNhanVien = "UPDATE NhanVien SET Ho = ?, Ten = ?, GioiTinh = ?, SoDienThoai = ?, ChucVu = ?, TrangThai = ? WHERE MaNV = ?";
         String sqlTaiKhoan = "UPDATE TaiKhoan SET TaiKhoan = ?, MatKhau = ?, Quyen = ?, TrangThai = ? WHERE MaNV = ?";
@@ -198,7 +194,7 @@ public class NhanVienDAO {
             
             int rowsAffectedNV = psNhanVien.executeUpdate();
 
-           
+            
             psTaiKhoan = conn.prepareStatement(sqlTaiKhoan);
             psTaiKhoan.setString(1, nv.getTenTaiKhoan());
             psTaiKhoan.setString(2, nv.getMatKhau());
@@ -208,7 +204,7 @@ public class NhanVienDAO {
 
             int rowsAffectedTK = psTaiKhoan.executeUpdate();
 
-           
+            
             if (rowsAffectedNV > 0 || rowsAffectedTK > 0) { 
                 conn.commit(); 
                 return true;
@@ -228,7 +224,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
-           
+            
             try {
                 if (psNhanVien != null) psNhanVien.close();
                 if (psTaiKhoan != null) psTaiKhoan.close();
@@ -242,7 +238,6 @@ public class NhanVienDAO {
         }
     }
 
- 
     public boolean xoaNhanVien(int maNV) {
         String sqlNhanVien = "UPDATE NhanVien SET TrangThai = 0 WHERE MaNV = ?";
         String sqlTaiKhoan = "UPDATE TaiKhoan SET TrangThai = 0 WHERE MaNV = ?";
@@ -255,7 +250,7 @@ public class NhanVienDAO {
             conn = DBConnect.getConnection();
             conn.setAutoCommit(false); 
 
-           
+            
             psNhanVien = conn.prepareStatement(sqlNhanVien);
             psNhanVien.setInt(1, maNV);
             int rowsAffectedNV = psNhanVien.executeUpdate();
@@ -284,7 +279,7 @@ public class NhanVienDAO {
             }
             return false;
         } finally {
-           
+            
             try {
                 if (psNhanVien != null) psNhanVien.close();
                 if (psTaiKhoan != null) psTaiKhoan.close();
@@ -298,12 +293,11 @@ public class NhanVienDAO {
         }
     }
 
- 
     public ArrayList<NhanVienDTO> timKiemNhanVien(String tuKhoa) {
         ArrayList<NhanVienDTO> danhSach = new ArrayList<>();
         String sql = "SELECT nv.*, tk.TaiKhoan, tk.MatKhau " +
                      "FROM NhanVien nv " +
-                     "JOIN TaiKhoan tk ON nv.MaNV = tk.MaNV " +
+                     "LEFT JOIN TaiKhoan tk ON nv.MaNV = tk.MaNV " +
                      "WHERE CAST(nv.MaNV AS VARCHAR) LIKE ? " +
                      "OR CONCAT(nv.Ho, ' ', nv.Ten) LIKE ? " +
                      "OR nv.SoDienThoai LIKE ? " +
@@ -334,7 +328,7 @@ public class NhanVienDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-           
+            
             if (rs != null) {
                 try {
                     Statement stmt = rs.getStatement();
