@@ -188,9 +188,9 @@ public class PnCTPhieuNhap extends JDialog {
                 }
                 int idSP = sp.getID();
                 int soLuong = Integer.parseInt(txtSoLuong.getText().trim());
-                int giaNhap = Integer.parseInt(txtGiaNhap.getText().trim());
+                int giaNhap = parseMoney(txtGiaNhap.getText());  // <-- dùng parseMoney
                 int thanhTien = soLuong * giaNhap;
-                txtThanhTien.setText(String.valueOf(thanhTien));
+                txtThanhTien.setText(formatMoney(thanhTien));     // <-- hiển thị dạng tiền tệ
 
                 boolean existed = false;
                 for (int i = 0; i < model.getRowCount(); i++) {
@@ -221,7 +221,7 @@ public class PnCTPhieuNhap extends JDialog {
                     if (!ok) {
                         JOptionPane.showMessageDialog(this,
                                 "Sản phẩm mới chưa có trong hệ thống.\n" +
-                                "Vui lòng thêm sản phẩm vào hệ thống trước khi nhập hàng!!!",
+                                        "Vui lòng thêm sản phẩm vào hệ thống trước khi nhập hàng!!!",
                                 "Lỗi", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
@@ -247,7 +247,7 @@ public class PnCTPhieuNhap extends JDialog {
                 if (sp == null) { JOptionPane.showMessageDialog(this, "Chọn sản phẩm!"); return; }
                 int idSP = sp.getID();
                 int soLuong = Integer.parseInt(txtSoLuong.getText().trim());
-                int giaNhap = Integer.parseInt(txtGiaNhap.getText().trim());
+                int giaNhap = parseMoney(txtGiaNhap.getText());   // <-- dùng parseMoney
 
                 boolean ok = ctBus.updateDetail(maPN, idSP, soLuong, giaNhap);
                 if (!ok) {
@@ -362,8 +362,17 @@ public class PnCTPhieuNhap extends JDialog {
             Product sp = spDao.getOneById(ct.getId());
             if (sp != null) tenSP = sp.getTenSP();
 
-            model.addRow(new Object[]{ ct.getMaPN(), ct.getId(), tenSP,
-                                       ct.getSoLuong(), ct.getGiaNhap(), ct.getThanhTien() });
+            String giaNhapStr   = formatMoney(ct.getGiaNhap());
+            String thanhTienStr = formatMoney(ct.getThanhTien());
+
+            model.addRow(new Object[]{
+                    ct.getMaPN(),
+                    ct.getId(),
+                    tenSP,
+                    ct.getSoLuong(),
+                    giaNhapStr,
+                    thanhTienStr
+            });
             tong += ct.getThanhTien();
         }
         lblTongTien.setText("Tổng tiền: " + moneyFmt.format(tong) + " VNĐ");
@@ -416,5 +425,17 @@ public class PnCTPhieuNhap extends JDialog {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    // ====== HÀM HỖ TRỢ ĐỊNH DẠNG TIỀN ======
+    private String formatMoney(long value) {
+        return moneyFmt.format(value);
+    }
+
+    private int parseMoney(String text) throws NumberFormatException {
+        if (text == null) return 0;
+        String cleaned = text.replaceAll("[^0-9]", ""); // bỏ tất cả ký tự không phải số
+        if (cleaned.isEmpty()) return 0;
+        return Integer.parseInt(cleaned);
     }
 }
