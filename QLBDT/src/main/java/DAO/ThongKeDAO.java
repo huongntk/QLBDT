@@ -13,7 +13,7 @@ public class ThongKeDAO {
         ArrayList<Object[]> danhSach = new ArrayList<>();
         String sql = "SELECT p.ID, p.TenSP, SUM(ct.soLuong) AS TongSoLuong, SUM(ct.thanhTien) AS TongGiaTri " +
                      "FROM CTHoaDon ct " + 
-                     "JOIN Product p ON ct.maSP = p.ID " + 
+                     "JOIN SanPham p ON ct.ID = p.ID " + 
                      "JOIN HoaDon hd ON ct.maHD = hd.maHD " + 
                      "WHERE hd.ngayLap BETWEEN ? AND ? " + 
                      "GROUP BY p.ID, p.TenSP " +
