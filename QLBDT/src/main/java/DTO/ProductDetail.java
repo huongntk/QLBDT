@@ -34,19 +34,19 @@ public class ProductDetail {
 
     public ProductDetail(int ID) {
         this.ID = ID;
-        this.DuongKinhMat = "";
-        this.DoDayMat = "";
-        this.ChatLieuVo = "";
-        this.ChatLieuDay = "";
-        this.KieuMat = "";
-        this.Kinh = "";
-        this.BoMay = "";
-        this.NangLuongCo = "";
-        this.ThoiGianTruCoc = "";
-        this.DoChiuNuoc = "";
-        this.ChucNangKhac = "";
-        this.BaoHanh = "";
-        this.MauMatSo = "";
+        this.DuongKinhMat = "Chưa cập nhập";
+        this.DoDayMat = "Chưa cập nhập";
+        this.ChatLieuVo = "Chưa cập nhập";
+        this.ChatLieuDay = "Chưa cập nhập";
+        this.KieuMat = "Chưa cập nhập";
+        this.Kinh = "Chưa cập nhập";
+        this.BoMay = "Chưa cập nhập";
+        this.NangLuongCo = "Chưa cập nhập";
+        this.ThoiGianTruCoc = "Chưa cập nhập";
+        this.DoChiuNuoc = "Chưa cập nhập";
+        this.ChucNangKhac = "Chưa cập nhập";
+        this.BaoHanh = "Chưa cập nhập";
+        this.MauMatSo = "Chưa cập nhập";
         this.TrongLuong = 0f;
     }
 

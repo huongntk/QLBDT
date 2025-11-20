@@ -71,7 +71,6 @@ public class CTSanPhamDAO {
         return false;
     }
 }
-
     public boolean updateCTSanPham(ProductDetail detail) {
         try (Connection conn = DBConnect.getConnection()) {
             String sql = "UPDATE CTSanPham SET DuongKinhMat=?, DoDayMat=?, ChatLieuVo=?, ChatLieuDay=?, KieuMat=?, Kinh=?, BoMay=?, NangLuongCo=?, ThoiGianTruCoc=?, DoChiuNuoc=?, ChucNangKhac=?, BaoHanh=?, MauMatSo=?, TrongLuong=? WHERE ID=?";
